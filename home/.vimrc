@@ -48,12 +48,19 @@ set hidden
 set history=100
 " always show status line
 set laststatus=2
+" show trailing whitespace
 set list
 set listchars=tab:>-,trail:.,extends:#,nbsp:.
+" enable folding
 set foldenable
 set foldmethod=indent
+" use the_silver_searcher for grep
 set grepprg=ag
+" set search ignore case based on the search string
 set smartcase
+" enable search highlight
+set hls
+
 "
 " set search paths (for gf, etc)
 "
@@ -105,32 +112,6 @@ let g:tagbar_type_objc = {
             \ ],
             \ }
 
-"let g:tagbar_type_objcpp = {
-            "\ 'ctagstype': 'objcpp',
-            "\ 'ctagsargs': [
-            "\ '-f',
-            "\ '-',
-            "\ '--excmd=pattern',
-            "\ '--extra=',
-            "\ '--format=2',
-            "\ '--fields=nksaSmt',
-            "\ '--options='.expand('~/.vim/objctags'),
-            "\ '--objc-kinds=-N',
-            "\ ],
-            "\ 'sro': ' ',
-            "\ 'kinds': [
-            "\ 'c:constant',
-            "\ 'e:enum',
-            "\ 't:typedef',
-            "\ 'i:interface',
-            "\ 'P:protocol',
-            "\ 'p:property',
-            "\ 'I:implementation',
-            "\ 'M:method',
-            "\ 'g:pragma',
-            "\ ],
-            "\ }
-
 " gist-vim setup for github
 let g:gist_detect_filetype = 1
 let g:gist_open_browser_after_post = 1
@@ -158,7 +139,6 @@ let g:airline_theme='luna'
 
 " UI specific fonts and themes
 if has("gui_running")
-    " global variables
     let g:airline_powerline_fonts=1
     let g:unite_prompt = '❫ '
     let NERDTreeDirArrows=1
@@ -322,7 +302,6 @@ if has("gui_running")
 else
     colo distinguished
 endif
-set hls
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -333,6 +312,7 @@ set hls
 
 " remove whitespace on save
 autocmd BufWritePre *.hh,*.hpp,*.m*,*.c*,*.py,*.rb,*.ninja,.vimrc :%s/\s\+$//e
+
 " disable syntax hl for huge files
 autocmd BufWinEnter * if line2byte(line("$") + 1) > 1000000 | syntax clear | endif
 
