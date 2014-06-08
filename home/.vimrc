@@ -1,4 +1,4 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
 " .vimrc // OSX
 "
@@ -53,7 +53,7 @@ set list
 set listchars=tab:>-,trail:.,extends:#,nbsp:.
 " enable folding
 set foldenable
-set foldmethod=indent
+set foldmethod=manual
 " use the_silver_searcher for grep
 set grepprg=ag
 " set search ignore case based on the search string
@@ -75,6 +75,19 @@ set path+=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xct
 " global variables
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let mapleader=','
+let python_highlight_all=1
+
+"let g:ctrlp_match_window = 'bottom,order:ttb'
+let g:ctrlp_switch_buffer = 0
+let g:ctrlp_working_path_mode = 0
+" use ag for search
+"let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
+let g:ctrlp_clear_cache_on_exit = 1
+
+
+let g:ConqueTerm_StartMessages=0
+let g:ConqueTerm_ColorMode=''
 
 " switch of special arrow characters in NERDTree by default
 let NERDTreeDirArrows=0
@@ -85,32 +98,67 @@ let g:makeshift_systems={
             \'build.ninja':'ninja'
             \}
 
-" enable objc support in Tagbar
+" add a definition for Objective-C to tagbar
 let g:tagbar_type_objc = {
-            \ 'ctagstype': 'objc',
-            \ 'ctagsargs': [
-            \ '-f',
-            \ '-',
-            \ '--excmd=pattern',
-            \ '--extra=',
-            \ '--format=2',
-            \ '--fields=nksaSmt',
-            \ '--options='.expand('~/.vim/objctags'),
-            \ '--objc-kinds=-N',
-            \ ],
-            \ 'sro': ' ',
-            \ 'kinds': [
-            \ 'c:constant',
-            \ 'e:enum',
-            \ 't:typedef',
-            \ 'i:interface',
-            \ 'P:protocol',
-            \ 'p:property',
-            \ 'I:implementation',
-            \ 'M:method',
-            \ 'g:pragma',
-            \ ],
-            \ }
+    \ 'ctagstype' : 'ObjectiveC',
+    \ 'kinds'     : [
+        \ 'i:interface',
+        \ 'I:implementation',
+        \ 'p:Protocol',
+        \ 'm:Object_method',
+        \ 'c:Class_method',
+        \ 'v:Global_variable',
+        \ 'F:Object field',
+        \ 'f:function',
+        \ 'p:property',
+        \ 't:type_alias',
+        \ 's:type_structure',
+        \ 'e:enumeration',
+        \ 'M:preprocessor_macro',
+    \ ],
+    \ 'sro'        : ' ',
+    \ 'kind2scope' : {
+        \ 'i' : 'interface',
+        \ 'I' : 'implementation',
+        \ 'p' : 'Protocol',
+        \ 's' : 'type_structure',
+        \ 'e' : 'enumeration'
+    \ },
+    \ 'scope2kind' : {
+        \ 'interface'      : 'i',
+        \ 'implementation' : 'I',
+        \ 'Protocol'       : 'p',
+        \ 'type_structure' : 's',
+        \ 'enumeration'    : 'e'
+    \ }
+\ }
+
+" enable objc support in Tagbar
+"let g:tagbar_type_objc = {
+            "\ 'ctagstype': 'objc',
+            "\ 'ctagsargs': [
+            "\ '-f',
+            "\ '-',
+            "\ '--excmd=pattern',
+            "\ '--extra=',
+            "\ '--format=2',
+            "\ '--fields=nksaSmt',
+            "\ '--options='.expand('~/.vim/objctags'),
+            "\ '--objc-kinds=-N',
+            "\ ],
+            "\ 'sro': ' ',
+            "\ 'kinds': [
+            "\ 'c:constant',
+            "\ 'e:enum',
+            "\ 't:typedef',
+            "\ 'i:interface',
+            "\ 'P:protocol',
+            "\ 'p:property',
+            "\ 'I:implementation',
+            "\ 'M:method',
+            "\ 'g:pragma',
+            "\ ],
+            "\ }
 
 " gist-vim setup for github
 let g:gist_detect_filetype = 1
@@ -167,6 +215,21 @@ let g:syntastic_objcpp_auto_refresh_includes=1
 "
 " functions
 "
+
+" use ConqueTerm w/ keyword progs
+function! ConqueMan()
+    let cmd = &keywordprg . ' '
+    if cmd ==# 'man ' || cmd ==# 'man -s '
+        if v:count > 0
+            let cmd .= v:count.' '
+        else
+            let cmd = 'man '
+        endif
+    endif
+    let cmd .= expand('<cword>')
+    exe 'ConqueTermSplit' cmd
+endfunction
+map K :<C-u>call ConqueMan()<CR>
 
 " see unsaved changes in vimdiff
 function! s:DiffWithSaved()
@@ -251,16 +314,25 @@ NeoBundle 'scrooloose/syntastic'
 NeoBundle 'scrooloose/nerdcommenter'
 " folder management
 NeoBundle 'scrooloose/nerdtree'
-" fuzzy code completion
-" essential color schemes
+" essential color schemes // the order is important
+" to override the old stuff in flazz/vim-colorschemes
+NeoBundle 'noahfrederick/vim-hemisu'
+NeoBundle 'romainl/Apprentice'
+NeoBundle 'altercation/vim-colors-solarized'
+NeoBundle 'jonathanfilip/vim-lucius'
 NeoBundle 'flazz/vim-colorschemes'
+" solarized color scheme
+" enhanced python highlight
+NeoBundle 'mitsuhiko/vim-python-combined'
 " ObjC enhancements
-"NeoBundle 'b4winckler/vim-objc'
-"NeoBundle 'msanders/cocoa.vim'
+NeoBundle 'b4winckler/vim-objc'
+NeoBundle 'msanders/cocoa.vim'
 " syntax hl for go
 "NeoBundle 'fatih/vim-go'
 " syntax hl for markdown
 NeoBundle 'plasticboy/vim-markdown'
+" enhanced c++14 highlight
+NeoBundle 'octol/vim-cpp-enhanced-highlight'
 " yank history
 NeoBundle 'vim-scripts/YankRing.vim'
 " ag // silver_searcher
@@ -269,18 +341,24 @@ NeoBundle 'rking/ag.vim'
 "NeoBundle 'airblade/vim-gitgutter'
 " close brackets automatically
 NeoBundle 'Raimondi/delimitMate'
+" tree like overview of undo options
 NeoBundle 'sjl/gundo.vim'
+" text expander tool for html/xml
 NeoBundle 'mattn/emmet-vim'
+" fuzzy code completion
 NeoBundle 'Valloric/YouCompleteMe', {'build': {'mac': 'install.sh'}}
+" switch between text patterns
 NeoBundle 'AndrewRadev/switch.vim'
 NeoBundle 'xuhdev/SingleCompile'
+" display tags
 NeoBundle 'majutsushi/tagbar'
 " autoreize windows w/ golden ratio
 NeoBundle 'zhaocai/GoldenView.Vim'
 " select makeprg automatically
 NeoBundle 'johnsyweb/vim-makeshift'
+" tabularize text by separator
 NeoBundle 'godlygeek/tabular'
-
+NeoBundle 'pthrasher/conqueterm-vim'
 call neobundle#end()
 
 " re-enable filetype
@@ -306,41 +384,44 @@ endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
-" Auto commands
+" Auto command
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+augroup langcfggroup
+    autocmd!
 
-" remove whitespace on save
-autocmd BufWritePre *.hh,*.hpp,*.m*,*.c*,*.py,*.rb,*.ninja,.vimrc :%s/\s\+$//e
+    " remove whitespace on save
+    autocmd BufWritePre *.hh,*.hpp,*.m*,*.c*,*.py,*.rb,*.ninja,.vimrc :%s/\s\+$//e
 
-" disable syntax hl for huge files
-autocmd BufWinEnter * if line2byte(line("$") + 1) > 1000000 | syntax clear | endif
+    " disable syntax hl for huge files
+    autocmd BufWinEnter * if line2byte(line("$") + 1) > 1000000 | syntax clear | endif
 
-" change the working directory to the current file's directory
-autocmd BufEnter * silent! lcd %:p:h
+    " change the working directory to the current file's directory
+    autocmd BufEnter * silent! lcd %:p:h
 
-" set codepage and style for .nfo files
-autocmd BufReadPre,BufNewFile *.nfo setlocal encoding=cp437 lines=50 columns=85
-            \colo ir_black
+    " set codepage and style for .nfo files
+    autocmd BufReadPre,BufNewFile *.nfo setlocal encoding=cp437 lines=50 columns=85
+                \colo ir_black
 
-" set custom tabsize for yaml/*html* files
-autocmd BufReadPre,BufNewFile *.yml setlocal ts=2 setlocal sw=2 sts=2 expandtab
-autocmd BufReadPre,BufNewFile *.*htm* setlocal ts=2 sw=2 sts=2 expandtab
+    " set custom tabsize for yaml/*html* files
+    autocmd BufReadPre,BufNewFile *.yml setlocal ts=2 setlocal sw=2 sts=2 expandtab
+    autocmd BufReadPre,BufNewFile *.*htm* setlocal ts=2 sw=2 sts=2 expandtab
 
-" set custom syn hl for python (MacVim only)
-if has("gui_running")
-    autocmd BufReadPre,BufNewFile *.py colo hemisu
-endif
+    " set custom syn hl for python (MacVim only)
+    if has("gui_running")
+        autocmd BufReadPre,BufNewFile *.py colo hemisu
+    endif
 
-autocmd BufReadPre,BufNewFile *.py setlocal mp=python2.7\ %
+    autocmd BufReadPre,BufNewFile *.py setlocal mp=python2.7\ %
 
-" set filetype for ObjC + + files
-autocmd BufRead,BufNewFile *.m setlocal filetype=objc
-autocmd BufRead,BufNewFile *.mm setlocal filetype=objcpp
+    " set filetype for ObjC + + files
+    autocmd BufRead,BufNewFile *.m setlocal filetype=objc
+    autocmd BufRead,BufNewFile *.mm setlocal filetype=objcpp
 
-autocmd FileType objcpp ru after/syntax/objc_enhanced.vim
-			\| let b:match_words = '@\(implementation\|interface\):@end'
+    autocmd FileType objcpp ru after/syntax/objc_enhanced.vim
+                \| let b:match_words = '@\(implementation\|interface\):@end'
 
+augroup END
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
@@ -375,23 +456,23 @@ nmap gl <C-w>l
 nnoremap <C-j> :m .+1<CR>==
 nnoremap <C-k> :m .-2<CR>==
 
-nnoremap ,ag    :Ag<space>
+nnoremap <Leader>ag    :Ag<space>
 
 " default make commands
-nnoremap <silent> ,ma    :make<CR>
-nnoremap <silent> ,mr    :make all<CR>
-nnoremap <silent> ,mc    :make clean<CR>
+nnoremap <silent> <Leader>ma    :make<CR>
+nnoremap <silent> <Leader>mr    :make all<CR>
+nnoremap <silent> <Leader>mc    :make clean<CR>
 
 "
 " shorthands for various tasks
 "
 
-" kill the highlight of last search result with: ,/
-nnoremap <silent> ,/    :nohlsearch<CR>
+" kill the highlight of last search result with: <Leader>/
+nnoremap <silent> <Leader>/    :nohlsearch<CR>
 
 " vim-fugitive mapings
 nnoremap [fugitive]  <Nop>
-nmap    ,g [fugitive]
+nmap    <Leader>g [fugitive]
 
 nnoremap <silent> [fugitive]s   :Gstatus<CR>
 nnoremap <silent> [fugitive]c   :Gcommit<CR>
@@ -411,24 +492,24 @@ nnoremap <silent> [unite]fr  :<C-u>Unite file_rec/async<CR>
 nnoremap <silent> [unite]g   :<C-u>Unite grep<CR>
 
 " tool windows
-nnoremap <silent> ,nt   :<C-u>NERDTree<CR>
-nnoremap <silent> ,tb   :<C-u>TagbarToggle<CR>
-nnoremap <silent> ,uu   :<C-u>GundoToggle<CR>
+nnoremap <silent> <Leader>nt   :<C-u>NERDTree<CR>
+nnoremap <silent> <Leader>tb   :<C-u>TagbarToggle<CR>
+nnoremap <silent> <Leader>uu   :<C-u>GundoToggle<CR>
 
 " exit buffer
-nnoremap <silent> ,qq   :q!<CR>
-nnoremap <silent> ,wq   :wq!<CR>
+nnoremap <silent> <Leader>qq   :q!<CR>
+nnoremap <silent> <Leader>qw   :wq!<CR>
 
 " cd to current file's working dir
-nnoremap ,cd    :cd %:p:h<CR>:pwd<CR>
+nnoremap <Leader>cd    :cd %:p:h<CR>:pwd<CR>
 
 " edit rc files
-nnoremap <silent> ,rc   :tabe ~/.vimrc<CR>
-nnoremap <silent> ,zrc  :tabe ~/.zshrc<CR>
+nnoremap <silent> <Leader>rc   :tabe ~/.vimrc<CR>
+nnoremap <silent> <Leader>zrc  :tabe ~/.zshrc<CR>
 
 " diff unsaved
-nnoremap <silent> ,vdc :DiffSaved<CR>
-nnoremap <silent> ,dc :KSDiffSaved<CR>
+nnoremap <silent> <Leader>vdc :DiffSaved<CR>
+nnoremap <silent> <Leader>dc :KSDiffSaved<CR>
 
 "
 " Plugin mappings
@@ -450,8 +531,8 @@ nmap <silent> <C-L>  <Plug>GoldenViewSplit
 
 " 2. quickly switch current window with the main pane
 " and toggle back
-nmap <silent> ,wm   <Plug>GoldenViewSwitchMain
-nmap <silent> ,wt <Plug>GoldenViewSwitchToggle
+nmap <silent> <Leader>lm   <Plug>GoldenViewSwitchMain
+nmap <silent> <Leader>lt <Plug>GoldenViewSwitchToggle
 
 com! Autopep8 :!autopep8 -i %
 
