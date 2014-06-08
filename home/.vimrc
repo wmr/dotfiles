@@ -60,7 +60,6 @@ set grepprg=ag
 set smartcase
 " enable search highlight
 set hls
-
 "
 " set search paths (for gf, etc)
 "
@@ -78,12 +77,13 @@ set path+=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xct
 let mapleader=','
 let python_highlight_all=1
 
+
 "let g:ctrlp_match_window = 'bottom,order:ttb'
-let g:ctrlp_switch_buffer = 0
-let g:ctrlp_working_path_mode = 0
+let g:ctrlp_switch_buffer=0
+let g:ctrlp_working_path_mode=0
 " use ag for search
 "let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
-let g:ctrlp_clear_cache_on_exit = 1
+let g:ctrlp_clear_cache_on_exit=1
 
 
 let g:ConqueTerm_StartMessages=0
@@ -133,32 +133,6 @@ let g:tagbar_type_objc = {
     \ }
 \ }
 
-" enable objc support in Tagbar
-"let g:tagbar_type_objc = {
-            "\ 'ctagstype': 'objc',
-            "\ 'ctagsargs': [
-            "\ '-f',
-            "\ '-',
-            "\ '--excmd=pattern',
-            "\ '--extra=',
-            "\ '--format=2',
-            "\ '--fields=nksaSmt',
-            "\ '--options='.expand('~/.vim/objctags'),
-            "\ '--objc-kinds=-N',
-            "\ ],
-            "\ 'sro': ' ',
-            "\ 'kinds': [
-            "\ 'c:constant',
-            "\ 'e:enum',
-            "\ 't:typedef',
-            "\ 'i:interface',
-            "\ 'P:protocol',
-            "\ 'p:property',
-            "\ 'I:implementation',
-            "\ 'M:method',
-            "\ 'g:pragma',
-            "\ ],
-            "\ }
 
 " gist-vim setup for github
 let g:gist_detect_filetype = 1
@@ -358,7 +332,10 @@ NeoBundle 'zhaocai/GoldenView.Vim'
 NeoBundle 'johnsyweb/vim-makeshift'
 " tabularize text by separator
 NeoBundle 'godlygeek/tabular'
+" fully capable terminal window
 NeoBundle 'pthrasher/conqueterm-vim'
+NeoBundle 'edkolev/promptline.vim'
+
 call neobundle#end()
 
 " re-enable filetype
@@ -387,6 +364,7 @@ endif
 " Auto command
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 augroup langcfggroup
     autocmd!
 
@@ -422,6 +400,17 @@ augroup langcfggroup
                 \| let b:match_words = '@\(implementation\|interface\):@end'
 
 augroup END
+
+augroup switchgroup
+    autocmd Filetype python let b:switch_custom_definitions=
+                \[
+                \   {
+                \       'xrange': 'range',
+                \       ' range': ' xrange',
+                \   }
+                \]
+augroup END
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
@@ -511,6 +500,8 @@ nnoremap <silent> <Leader>zrc  :tabe ~/.zshrc<CR>
 nnoremap <silent> <Leader>vdc :DiffSaved<CR>
 nnoremap <silent> <Leader>dc :KSDiffSaved<CR>
 
+nnoremap <Leader><Leader>s :Switch<CR>
+
 "
 " Plugin mappings
 "
@@ -531,8 +522,9 @@ nmap <silent> <C-L>  <Plug>GoldenViewSplit
 
 " 2. quickly switch current window with the main pane
 " and toggle back
-nmap <silent> <Leader>lm   <Plug>GoldenViewSwitchMain
-nmap <silent> <Leader>lt <Plug>GoldenViewSwitchToggle
+nmap <silent> <Leader>lm    <Plug>GoldenViewSwitchMain
+nmap <silent> <Leader>lt    <Plug>GoldenViewSwitchToggle
+nmap <silent> <Leader>ll    <Plug>GoldenViewResize
 
 com! Autopep8 :!autopep8 -i %
 
