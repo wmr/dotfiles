@@ -1,3 +1,4 @@
+source "${HOME}/.profile"
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
 
@@ -10,11 +11,7 @@ ZSH=$HOME/.oh-my-zsh
 #ZSH_THEME="agnoster"
 #ZSH_THEME="norm"
 #ZSH_THEME="wedisagree"
-ZSH_THEME="nicoulaj"
-
-# aliases
-alias zshconf="mvim ~/.zshrc"
-alias plz=please
+#ZSH_THEME="nicoulaj"
 
 # Set to this to use case-sensitive completion
 # CASE_SENSITIVE="true"
@@ -45,7 +42,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(osx macports rsync colorize themes brew autojump autopep8 virtualenv jsontools sudo terminalapp vi-mode)
+plugins=(osx macports rsync colorize themes brew fasd autopep8 virtualenv jsontools sudo terminalapp vi-mode)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -68,6 +65,9 @@ export CLICOLOR=1
 # vi term mode
 set -o vi
 
-source "$HOME/.homesick/repos/homeshick/homeshick.sh"
-
-fpath=($HOME/.homesick/repos/homeshick/completions $fpath)
+# enable powerline
+source "${HOME}/.custom/powerline.zsh"
+# enable homeshick
+source "${HOME}/.custom/homeshick.zsh"
+# enable custom aliases
+source "${HOME}/.custom/aliases.zsh"
