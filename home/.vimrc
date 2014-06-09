@@ -493,8 +493,10 @@ let g:UltiSnipsJumpBackwardTrigger="<S-tab>"
 
 " YankRing =============================================================== {{{
 
-" set history folder under ~/.cache
+" place history folder under ~/.cache/yankring-history
 let g:yankring_history_dir="$HOME/.cache/"
+let g:yankring_history_file = 'yankring-history.txt'
+
 " yankring defaults overlaps w/ CtrlP
 let g:yankring_replace_n_pkey='‘' "option+[
 let g:yankring_replace_n_nkey='“' "option+]
