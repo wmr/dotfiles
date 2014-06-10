@@ -1,6 +1,6 @@
 " ============================================================================
 "
-" .vimrc // OSX // v1.4
+" .vimrc // OSX // v1.4.1
 " (c) 2014 // wmr
 "
 " ============================================================================
@@ -600,7 +600,7 @@ augroup variousGroup
                 \colo ir_black
 
     " set custom tabsize for yaml/*html* files
-    autocmd BufReadPre,BufNewFile *.yml setlocal ts=2 setlocal sw=2 sts=2 expandtab
+    autocmd BufReadPre,BufNewFile *.yml setlocal ts=2 sw=2 sts=2 expandtab
     autocmd BufReadPre,BufNewFile *.*htm* setlocal ts=2 sw=2 sts=2 expandtab
 
     " set custom syn hl for python (MacVim only)
@@ -609,6 +609,7 @@ augroup variousGroup
     endif
 
     autocmd FileType vim,zsh colo badwolf
+    autocmd FileType zsh setlocal ts=2 sw=2 sts=2 expandtab
 
     autocmd BufReadPre,BufNewFile *.py setlocal mp=python2.7\ %
 

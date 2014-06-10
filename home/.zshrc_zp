@@ -1,4 +1,7 @@
 #
+# (c) 2014 // wmr
+#
+
 #
 # Executes commands at the start of an interactive session.
 #
@@ -8,15 +11,14 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-# fasd shorthands
-alias f='fasd -f'
-alias d='fasd -d'
-alias z='fasd_cd -d' # mimic autojump
-alias j=z
-
 # enable homeshick
 source "${HOME}/.custom/homeshick.zsh"
+
 # enable powerline
 source "${HOME}/.custom/powerline.zsh"
+
 # enable custom aliases
 source "${HOME}/.custom/aliases.zsh"
+
+# enable zaw
+source "${HOME}/.custom/zaw/zaw.zsh"
