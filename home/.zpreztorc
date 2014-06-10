@@ -28,7 +28,6 @@ zstyle ':prezto:load' pmodule \
   'history-substring-search' \
   'directory' \
   'spectrum' \
-  'utility' \
   'completion' \
   'homebrew' \
   'osx' \
@@ -38,7 +37,6 @@ zstyle ':prezto:load' pmodule \
   'python' \
   'syntax-highlighting' \
   'tmux' \
-  'utility' \
   'fasd' \
   'prompt'
 

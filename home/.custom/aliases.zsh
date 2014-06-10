@@ -46,10 +46,10 @@ alias ll='ls -lh'        # Lists human readable sizes.
 alias lr='ll -R'         # Lists human readable sizes, recursively.
 alias la='ll -A'         # Lists human readable sizes, hidden files.
 alias lm='la | "$PAGER"' # Lists human readable sizes, hidden files through pager.
-alias llk='ll -Sr'        # Lists sorted by size, largest last.
-alias llt='ll -tr'        # Lists sorted by date, most recent last.
-alias llc='llt -c'         # Lists sorted by date, most recent last, shows change time.
-alias llu='llt -u'         # Lists sorted by date, most recent last, shows access time.
+alias llk='ll -Sr'       # Lists sorted by size, largest last.
+alias llt='ll -tr'       # Lists sorted by date, most recent last.
+alias llc='llt -c'       # Lists sorted by date, most recent last, shows change time.
+alias llu='llt -u'       # Lists sorted by date, most recent last, shows access time.
 if (( $+commands[curl] )); then
   alias get='curl --continue-at - --location --progress-bar --remote-name --remote-time'
 fi
@@ -97,4 +97,9 @@ function find-exec {
 # Serves a directory via HTTP.
 alias http-serve='python -m SimpleHTTPServer'
 
-
+# fasd shorthands
+alias f='fasd -f'    # pick file
+alias d='fasd -d'    # pick directory
+alias z='fasd_cd -d' # cd to dir
+alias v='f -e vim'   # quickly open files with vim
+alias j=z            # mimic autojump
