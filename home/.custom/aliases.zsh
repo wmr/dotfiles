@@ -40,7 +40,7 @@ alias po='popd'
 alias pu='pushd'
 alias type='type -a'
 
-alias ls='ls -G'
+alias ls='ls -G'         # enable colored output in ls
 alias l='ls -1A'         # Lists in one column, hidden files.
 alias ll='ls -lh'        # Lists human readable sizes.
 alias lr='ll -R'         # Lists human readable sizes, recursively.
@@ -50,15 +50,13 @@ alias llk='ll -Sr'       # Lists sorted by size, largest last.
 alias llt='ll -tr'       # Lists sorted by date, most recent last.
 alias llc='llt -c'       # Lists sorted by date, most recent last, shows change time.
 alias llu='llt -u'       # Lists sorted by date, most recent last, shows access time.
+
 if (( $+commands[curl] )); then
   alias get='curl --continue-at - --location --progress-bar --remote-name --remote-time'
 fi
 
 if (( $+commands[htop] )); then
   alias top=htop
-else
-  alias topc='top -o cpu'
-  alias topm='top -o vsize'
 fi
 
 # Makes a directory and changes to it.
@@ -90,9 +88,6 @@ function slit {
 function find-exec {
   find . -type f -iname "*${1:-}*" -exec "${2:-file}" '{}' \;
 }
-
-
-
 
 # Serves a directory via HTTP.
 alias http-serve='python -m SimpleHTTPServer'
