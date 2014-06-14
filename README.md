@@ -1,4 +1,4 @@
 dotfiles
 ========
 
-Many of my dotfiles managed by homeshick
+My OSX dotfiles, managed with homeshick (https://github.com/andsens/homeshick)
