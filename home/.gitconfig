@@ -1,0 +1,38 @@
+[user]
+    name = wmr
+    email = wmr101@gmail.com
+[difftool "Kaleidoscope"]
+    cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
+[difftool "mvimdiff"]
+    cmd = /usr/local/bin/mvim -f -d \"$LOCAL\" \"$REMOTE\"
+[diff]
+    tool = Kaleidoscope
+[difftool]
+    prompt = false
+[mergetool "Kaleidoscope"]
+    cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
+    trustExitCode = true
+[mergetool]
+    prompt = false
+[merge]
+    tool = Kaleidoscope
+[filter "media"]
+    clean = git-media-clean %f
+    smudge = git-media-smudge %f
+[github]
+    user = wmr
+[core]
+    autocrlf = input
+    safecrlf = true
+[color]
+    status = auto
+    branch = auto
+    interactive = auto
+    diff = auto
+[alias]
+    st = status
+    unstage = rm --cached
+[credential]
+    helper = osxkeychain
+[push]
+    default = simple
