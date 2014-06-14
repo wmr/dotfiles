@@ -1,15 +1,15 @@
 " ============================================================================
 "
-" .vimrc // OSX // v1.4.1
+" .vimrc // OSX // v1.4.2
 " (c) 2014 // wmr
 "
 " ============================================================================
 
 
-" ================================================================ Bundles {{{
+" Bundles ================================================================ {{{
 
 if has('vim_starting')
-    set rtp+=~/.vim/bundle/neobundle.vim/
+  set rtp+=~/.vim/bundle/neobundle.vim/
 endif
 
 call neobundle#begin(expand('~/.vim/bundle/'))
@@ -19,14 +19,14 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 
 " vimproc plugin native extension
 let g:neobundle_ext_vimproc_updcmd = has('win64') ?
-            \ 'tools\\update-dll-mingw 64' : 'tools\\update-dll-mingw 32'
+      \ 'tools\\update-dll-mingw 64' : 'tools\\update-dll-mingw 32'
 
 " background process support // used by unite and NeoBundle itself
 NeoBundle 'Shougo/vimproc.vim', {'build':
-            \{'windows': g:neobundle_ext_vimproc_updcmd,
-            \'cygwin': 'make -f make_cygwin.mak',
-            \'mac': 'make -f make_mac.mak',
-            \'unix': 'make -f make_unix.mak'}}
+      \{'windows': g:neobundle_ext_vimproc_updcmd,
+      \'cygwin': 'make -f make_cygwin.mak',
+      \'mac': 'make -f make_mac.mak',
+      \'unix': 'make -f make_unix.mak'}}
 
 
 " Usability ============================================================== {{{
@@ -122,7 +122,7 @@ NeoBundle 'sjl/gundo.vim'
 " Text expander tool for html/xml
 NeoBundle 'mattn/emmet-vim'
 
-" Fuzzy code completion
+
 NeoBundle 'Valloric/YouCompleteMe', {'build': {'mac': 'install.sh'}}
 
 " Switch between text patterns
@@ -145,11 +145,12 @@ NeoBundle 'godlygeek/tabular'
 
 " }}}
 
-
 " Color Schemes ========================================================== {{{
 
 " essential color schemes // the order is important
 " to override the old stuff in flazz/vim-colorschemes
+NeoBundle 'wesgibbs/vim-irblack'
+NeoBundle 'chriskempson/vim-tomorrow-theme'
 NeoBundle 'noahfrederick/vim-hemisu'
 NeoBundle 'romainl/Apprentice'
 NeoBundle 'altercation/vim-colors-solarized'
@@ -159,7 +160,6 @@ NeoBundle 'jonathanfilip/vim-lucius'
 NeoBundle 'flazz/vim-colorschemes'
 
 " }}}
-
 
 " Syntax ================================================================= {{{
 
@@ -178,7 +178,6 @@ NeoBundle 'octol/vim-cpp-enhanced-highlight'
 
 " }}}
 
-
 call neobundle#end()
 
 " re-enable filetype
@@ -188,7 +187,6 @@ filetype plugin indent on
 NeoBundleCheck
 
 " }}}
-
 
 " Default mode setup ===================================================== {{{
 
@@ -205,12 +203,13 @@ set backspace=2
 set nobackup
 set nowb
 set noswapfile
+set undofile
 
 " hide buffers instead of closing them
 set hidden
 
 " increase the size of history
-set history=100
+set history=1000
 
 " enable modelines
 set modeline
@@ -225,8 +224,16 @@ set magic
 set noerrorbells
 set visualbell t_vb=
 
-" use the_silver_searcher for grep
-set grepprg=ag
+" make search/replace operate on global scope by default
+set gdefault
+
+" use the_silver_searcher for :grep if available
+if executable('ag')
+  set grepprg=ag\ --nogroup\ --nocolor
+endif
+
+" ignore SCM paths from searches
+set wildignore+=*/.git/,*/.hg*/,*/.svn*/
 
 " set search ignore case based on the search string
 set smartcase
@@ -240,18 +247,23 @@ set fillchars+=diff:⣿
 " do not select the end of the line
 set selection=old
 
+" user UTF-8
+set encoding=utf-8
+
+" position the cursor min 'n' from screen edge
+set scrolloff=3
+
 if has('mouse')
 
-    " allow mouse everywhere
-    set mouse=a
+  " allow mouse everywhere
+  set mouse=a
 
-    " hide mouse while typing
-    set mousehide
+  " hide mouse while typing
+  set mousehide
 
 endif
 
 " }}}
-
 
 " Indent ================================================================= {{{
 
@@ -272,7 +284,6 @@ set expandtab
 
 " }}}
 
-
 " Appearance ============================================================= {{{
 
 " enable line numbers
@@ -286,13 +297,18 @@ set ruler
 
 " show trailing whitespace
 set list
-set listchars=tab:>-,trail:.,extends:#,nbsp:.
+set listchars=tab:▸-,trail:.,extends:#,nbsp:.
+
+" show commands while you type
+set showcmd
+
+" do not display mode changes (let vim-airline handle the job)
+set noshowmode
 
 " enable syntax highlighting
 syn on
 
 " }}}
-
 
 " Folding ================================================================ {{{
 
@@ -310,41 +326,39 @@ set foldnestmax=2
 
 " }}}
 
-
 " UI specific ============================================================ {{{
 
 if has('gui_running')
 
-    " disable menu bar
-    set guioptions-=m
+  " disable menu bar
+  set guioptions-=m
 
-    " disable tool bal
-    set guioptions-=T
+  " disable tool bal
+  set guioptions-=T
 
-    " disable letf scrollbar (incl if split present)
-    set guioptions-=l
-    set guioptions-=L
+  " disable letf scrollbar (incl if split present)
+  set guioptions-=l
+  set guioptions-=L
 
-    " disable right scrollbar (incl if split present
-    set guioptions-=r
-    set guioptions-=R
+  " disable right scrollbar (incl if split present
+  set guioptions-=r
+  set guioptions-=R
 
-    set guifont=Monaco\ for\ Powerline:h12
-    set columns=105
+  set guifont=Monaco\ for\ Powerline:h12
+  set columns=105
 
-    colo hornet
+  colo hornet
 
-    " MacVim specific settings
-    if has('gui_macvim')
-        set transparency=3
-    endif
+  " MacVim specific settings
+  if has('gui_macvim')
+    set transparency=3
+  endif
 
 endif
 
 " }}}
 
 " }}}
-
 
 " Path setup ============================================================= {{{
 
@@ -356,7 +370,6 @@ set path+=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xct
 
 " }}}
 
-
 " Variable setup ========================================================= {{{
 
 " Built-int ============================================================== {{{
@@ -366,18 +379,16 @@ let python_highlight_all=1
 
 " }}}
 
-
 " CtrlP ================================================================== {{{
 
 "let g:ctrlp_match_window = 'bottom,order:ttb'
 let g:ctrlp_switch_buffer=0
 let g:ctrlp_working_path_mode=0
 " use ag for search // TODO: tweak params since very slow from home folder
-"let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
+let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 let g:ctrlp_clear_cache_on_exit=1
 
 " }}}
-
 
 " ConqueTerm ============================================================= {{{
 
@@ -385,7 +396,6 @@ let g:ctrlp_clear_cache_on_exit=1
 let g:ConqueTerm_StartMessages=0
 
 " }}}
-
 
 " NERDTree =============================================================== {{{
 
@@ -396,10 +406,15 @@ let NERDTreeQuitOnOpen=1
 
 " add support for ninja in makeshift
 let g:makeshift_systems={
-            \'build.ninja':'ninja'
-            \}
+      \'build.ninja':'ninja'
+      \}
 " }}}
+"
+" YouCompleteMe ========================================================== {{{
 
+ let g:ycm_global_ycm_extra_conf="/Users/wmr/.vim/.ycm_extra_conf.py"
+
+" }}}
 
 " Tagbar ================================================================= {{{
 
@@ -410,48 +425,47 @@ let g:tagbar_ctags_bin='/usr/local/bin/ctags'
 let g:tagbar_type_objc = {
     \ 'ctagstype' : 'ObjectiveC',
     \ 'kinds'     : [
-        \ 'i:interface',
-        \ 'I:implementation',
-        \ 'p:Protocol',
-        \ 'm:Object_method',
-        \ 'c:Class_method',
-        \ 'v:Global_variable',
-        \ 'F:Object field',
-        \ 'f:function',
-        \ 'p:property',
-        \ 't:type_alias',
-        \ 's:type_structure',
-        \ 'e:enumeration',
-        \ 'M:preprocessor_macro',
+      \ 'i:interface',
+      \ 'I:implementation',
+      \ 'p:Protocol',
+      \ 'm:Object_method',
+      \ 'c:Class_method',
+      \ 'v:Global_variable',
+      \ 'F:Object field',
+      \ 'f:function',
+      \ 'p:property',
+      \ 't:type_alias',
+      \ 's:type_structure',
+      \ 'e:enumeration',
+      \ 'M:preprocessor_macro',
     \ ],
     \ 'sro'        : ' ',
     \ 'kind2scope' : {
-        \ 'i' : 'interface',
-        \ 'I' : 'implementation',
-        \ 'p' : 'Protocol',
-        \ 's' : 'type_structure',
-        \ 'e' : 'enumeration'
+      \ 'i' : 'interface',
+      \ 'I' : 'implementation',
+      \ 'p' : 'Protocol',
+      \ 's' : 'type_structure',
+      \ 'e' : 'enumeration'
     \ },
     \ 'scope2kind' : {
-        \ 'interface'      : 'i',
-        \ 'implementation' : 'I',
-        \ 'Protocol'       : 'p',
-        \ 'type_structure' : 's',
-        \ 'enumeration'    : 'e'
+      \ 'interface'      : 'i',
+      \ 'implementation' : 'I',
+      \ 'Protocol'       : 'p',
+      \ 'type_structure' : 's',
+      \ 'enumeration'    : 'e'
     \ }
-\ }
+  \ }
 
 " add a definition for zsh support (requires config in ~/.ctags).
 let g:tagbar_type_zsh = {
-    \ 'ctagstype': 'zsh',
-    \ 'kinds': [
-        \ 'f:functions:1'
-    \ ],
-    \ 'fold': 0
-\ }
+      \ 'ctagstype': 'zsh',
+      \ 'kinds': [
+      \ 'f:functions:1'
+      \ ],
+      \ 'fold': 0
+      \ }
 
 " }}}
-
 
 " Gist-vim =============================================================== {{{
 
@@ -462,14 +476,12 @@ let g:gist_use_password_in_gitconfig=1
 
 " }}}
 
-
 " GoldenView ============================================================= {{{
 
 " disable goldenview default mappings // overlaps w/ CtrlP
 let g:goldenview__enable_default_mapping=0
 
 " }}}
-
 
 " UltiSnips ============================================================== {{{
 
@@ -490,7 +502,6 @@ let g:UltiSnipsJumpBackwardTrigger="<S-tab>"
 
 " }}}
 
-
 " YankRing =============================================================== {{{
 
 " place history folder under ~/.cache/yankring-history
@@ -502,15 +513,17 @@ let g:yankring_replace_n_pkey='‘' "option+[
 let g:yankring_replace_n_nkey='“' "option+]
 
 " airline theme + powerline fonts
-let g:airline_theme='luna'
+"let g:airline_theme='luna'
 
 " UI specific fonts and themes
 if has("gui_running")
-    let g:airline_powerline_fonts=1
-    let g:unite_prompt = '❫ '
-    let g:ycm_error_symbol = '❫ '
-    let g:ycm_warning_symbol = '❫ '
-    let NERDTreeDirArrows=1
+  let g:airline_powerline_fonts=1
+
+  " '❫ ' U+276B, UTF-8: E2 9D AB
+  let g:unite_prompt='❫ '
+  let g:ycm_error_symbol='❫ '
+  let g:ycm_warning_symbol='❫ '
+  let NERDTreeDirArrows=1
 endif
 
 " }}}
@@ -539,52 +552,75 @@ let g:syntastic_objcpp_auto_refresh_includes=1
 
 " }}}
 
+" Autoformat ============================================================= {{{
+
+let g:formatprg_cpp="uncrustify"
+let g:formatprg_args_expr_cpp='" -lCPP -f %"'
 " }}}
 
+
+" }}}
 
 " Functions ============================================================== {{{
 
 " use ConqueTerm w/ keyword progs
 function! ConqueMan()
-    let cmd = &keywordprg . ' '
-    if cmd ==# 'man ' || cmd ==# 'man -s '
-        if v:count > 0
-            let cmd .= v:count.' '
-        else
-            let cmd = 'man '
-        endif
+  let cmd = &keywordprg . ' '
+  if cmd ==# 'man ' || cmd ==# 'man -s '
+    if v:count > 0
+      let cmd .= v:count.' '
+    else
+      let cmd = 'man '
     endif
-    let cmd .= expand('<cword>')
-    exe 'ConqueTermSplit' cmd
+  endif
+  let cmd .= expand('<cword>')
+  exe 'ConqueTermSplit' cmd
 endfunction
 map K :<C-u>call ConqueMan()<CR>
 
 " see unsaved changes in vimdiff
 function! s:DiffWithSaved()
-    let filetype=&ft
-    diffthis
-    vnew | r # | normal! 1Gdd
-    diffthis
-    exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=".filetype
+  let filetype=&ft
+  diffthis
+  vnew | r # | normal! 1Gdd
+  diffthis
+  exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=".filetype
 
 endfunction
 com! DiffSaved call s:DiffWithSaved()
 
 " see unsaved changes in ksdiff
 function! s:KSDiffWithSaved()
-    :silent !mkdir -p /tmp/vimtemp
-    :silent w! /tmp/vimtemp/%:t
-    :silent !ksdiff % /tmp/vimtemp/%:t &
+  :silent !mkdir -p /tmp/vimtemp
+  :silent w! /tmp/vimtemp/%:t
+  :silent !ksdiff % /tmp/vimtemp/%:t &
 endfunction
 com! KSDiffSaved call s:KSDiffWithSaved()
 
-" }}}
+function! s:AddPythonPathsToPath()
+  if !exists('g:add_pyathon_paths_complete')
 
+python << END_PYTHON
+import os, sys, vim
+for p in sys.path:
+  if os.path.isdir(p):
+    vim.command(r"set path+=%s" % (p.replace(" ", r"\ ")))
+END_PYTHON
+
+  endif
+  let g:add_pyathon_paths_complete=1
+endfunction
+com! AddPythonPathsToPath call s:AddPythonPathsToPath()
+
+" }}}
 
 " Auto commands ========================================================== {{{
 
 augroup variousGroup
     autocmd!
+
+    " save when window losts focus
+    autocmd FocusLost * :wa
 
     " remove whitespace on save
     autocmd BufWritePre *.hh,*.hpp,*.m*,*.c*,*.py,*.rb,*.ninja,.vimrc :%s/\s\+$//e
@@ -594,6 +630,10 @@ augroup variousGroup
 
     " change the working directory to the current file's directory
     autocmd BufEnter * silent! lcd %:p:h
+augroup END
+
+augroup fileTypesGroup
+    autocmd!
 
     " set codepage and style for .nfo files
     autocmd BufReadPre,BufNewFile *.nfo setlocal encoding=cp437 lines=50 columns=85
@@ -603,22 +643,23 @@ augroup variousGroup
     autocmd BufReadPre,BufNewFile *.yml setlocal ts=2 sw=2 sts=2 expandtab
     autocmd BufReadPre,BufNewFile *.*htm* setlocal ts=2 sw=2 sts=2 expandtab
 
+    autocmd FileType python setlocal mp=python2.7\ % | call s:AddPythonPathsToPath()
     " set custom syn hl for python (MacVim only)
     if has("gui_running")
-        autocmd BufReadPre,BufNewFile *.py colo hemisu
+        autocmd FileType python colo hemisu
     endif
 
-    autocmd FileType vim,zsh colo badwolf
-    autocmd FileType zsh setlocal ts=2 sw=2 sts=2 expandtab
+    autocmd FileType vim setlocal ts=2 sw=2 sts=2 expandtab foldmethod=marker | colo apprentice
+    autocmd FileType zsh setlocal ts=2 sw=2 sts=2 expandtab | colo badwolf
 
-    autocmd BufReadPre,BufNewFile *.py setlocal mp=python2.7\ %
-
-    " set filetype for ObjC + + files
+    " set filetype for ObjC++ files
     autocmd BufRead,BufNewFile *.m setlocal filetype=objc
     autocmd BufRead,BufNewFile *.mm setlocal filetype=objcpp
 
+    " enable ObjC enhancements for ObjC++ as well
     autocmd FileType objcpp ru after/syntax/objc_enhanced.vim
                 \| let b:match_words = '@\(implementation\|interface\):@end'
+    autocmd FileType snippets setlocal noexpandtab
 
 augroup END
 
@@ -693,7 +734,9 @@ nnoremap <silent> <Leader>zrc  :tabe ~/.zshrc<CR>
 nnoremap <silent> <Leader>vdc :<C-u>DiffSaved<CR>
 nnoremap <silent> <Leader>dc :KSDiffSaved<CR>
 
-com! Autopep8 :!autopep8 -i %
+" toggle folds w/ space
+nnoremap <space> za
+
 
 " }}}
 
@@ -740,11 +783,23 @@ nmap <silent> <C-L>  <Plug>GoldenViewSplit
 
 " quickly switch current window with the main pane
 " and toggle back
-nmap <silent> <Leader>lm    <Plug>GoldenViewSwitchMain
-nmap <silent> <Leader>lt    <Plug>GoldenViewSwitchToggle
+noremap [layout]  <Nop>
+nmap <Leader>l  [layout]
+nmap <silent> [layout]m    <Plug>GoldenViewSwitchMain
+nmap <silent> [layout]t    <Plug>GoldenViewSwitchToggle
 
 " resize current window appropriately
-nmap <silent> <Leader>ll    <Plug>GoldenViewResize
+nmap <silent> <Leader>[layout]l    <Plug>GoldenViewResize
+
+" Tabular
+noremap [tabular] <Nop>
+nmap <Leader>t [tabular]
+nmap [tabular]p  :<C-u>Tabularize /:/l0l0l0l1<CR>
+vmap [tabular]p  :<C-u>Tabularize /:/l0l0l0l1<CR>
+vmap [tabular]h  :<C-u>Tabularize /#/<CR>
+
+nnoremap [tabular]s :<C-u>Tabularize<Space>/
+nnoremap <silent> [tabular]t   :<C-u>Tabularize<CR>
 
 " switch
 nnoremap <Leader><Leader>s :Switch<CR>
