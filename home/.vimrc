@@ -5,8 +5,9 @@
 "
 " ============================================================================
 
-
 " Bundles ================================================================ {{{
+
+" NeoBundle initialization
 
 if has('vim_starting')
   set rtp+=~/.vim/bundle/neobundle.vim/
@@ -17,7 +18,8 @@ call neobundle#begin(expand('~/.vim/bundle/'))
 " Fetch the NeoBundle itself
 NeoBundleFetch 'Shougo/neobundle.vim'
 
-" vimproc plugin native extension
+" API ==================================================================== {{{
+
 let g:neobundle_ext_vimproc_updcmd = has('win64') ?
       \ 'tools\\update-dll-mingw 64' : 'tools\\update-dll-mingw 32'
 
@@ -28,6 +30,7 @@ NeoBundle 'Shougo/vimproc.vim', {'build':
       \'mac': 'make -f make_mac.mak',
       \'unix': 'make -f make_unix.mak'}}
 
+" }}}
 
 " Usability ============================================================== {{{
 
@@ -73,6 +76,9 @@ NeoBundle 'edkolev/promptline.vim'
 " yank history
 NeoBundle 'vim-scripts/YankRing.vim'
 
+" display  marks
+NeoBundle 'kshenoy/vim-signature'
+
 " }}}
 
 " FileSystem ============================================================= {{{
@@ -80,8 +86,11 @@ NeoBundle 'vim-scripts/YankRing.vim'
 " Fuzzy search files/buffers
 NeoBundle 'kien/ctrlp.vim'
 
-" Another fuzzy search tool with different scope
+" Another fuzzy search tool with different scope and plugins
 NeoBundle 'Shougo/unite.vim'
+
+" colorscheme plugin
+NeoBundle 'ujihisa/unite-colorscheme'
 
 " Browse the filesystem easily
 NeoBundle 'scrooloose/nerdtree'
@@ -123,7 +132,7 @@ NeoBundle 'sjl/gundo.vim'
 NeoBundle 'mattn/emmet-vim'
 
 
-NeoBundle 'Valloric/YouCompleteMe', {'build': {'mac': 'install.sh'}}
+NeoBundle 'Valloric/YouCompleteMe', {'build': {'mac': './install.sh --clang-completer'}}
 
 " Switch between text patterns
 NeoBundle 'AndrewRadev/switch.vim'
@@ -189,7 +198,6 @@ NeoBundleCheck
 " }}}
 
 " Default mode setup ===================================================== {{{
-
 
 " Behavior =============================================================== {{{
 
@@ -379,13 +387,35 @@ let python_highlight_all=1
 
 " }}}
 
+" EasyMotion ============================================================= {{{
+
+" enable smart case
+let g:EasyMotion_smartcase=1
+" eable smart signs (eg. 1 vs. !)
+let g:EasyMotion_use_smartsign_us=1
+" jump to first match w/ enter or space
+let g:EasyMotion_enter_jump_first=1
+" highlight landing for a limited time
+"let g:EasyMotion_landing_highlight=1
+" }}}
+
+" vim-airline ============================================================ {{{
+
+" airline theme + powerline fonts
+"let g:airline_theme='luna'
+if has("gui_running")
+  let g:airline_powerline_fonts=1
+endif
+
+" }}}
+
 " CtrlP ================================================================== {{{
 
 "let g:ctrlp_match_window = 'bottom,order:ttb'
 let g:ctrlp_switch_buffer=0
 let g:ctrlp_working_path_mode=0
-" use ag for search // TODO: tweak params since very slow from home folder
-let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+" use ag for search
+let g:ctrlp_user_command='ag %s -l --nocolor -g ""'
 let g:ctrlp_clear_cache_on_exit=1
 
 " }}}
@@ -400,7 +430,14 @@ let g:ConqueTerm_StartMessages=0
 " NERDTree =============================================================== {{{
 
 " switch off special arrow characters in NERDTree by default
-let NERDTreeDirArrows=0
+
+" UI specific fonts and themes
+if has('gui_running')
+  let NERDTreeDirArrows=1
+else
+  let NERDTreeDirArrows=0
+endif
+
 " close the NERDTree tool window after opening a file
 let NERDTreeQuitOnOpen=1
 
@@ -412,7 +449,13 @@ let g:makeshift_systems={
 "
 " YouCompleteMe ========================================================== {{{
 
- let g:ycm_global_ycm_extra_conf="/Users/wmr/.vim/.ycm_extra_conf.py"
+let g:ycm_autoclose_preview_window_after_completion=1
+let g:ycm_global_ycm_extra_conf="~/.vim/.ycm_extra_conf.py"
+
+"if has('gui_running')
+  "let g:ycm_error_symbol='❫ '
+  "let g:ycm_warning_symbol='❫ '
+"endif
 
 " }}}
 
@@ -505,31 +548,42 @@ let g:UltiSnipsJumpBackwardTrigger="<S-tab>"
 " YankRing =============================================================== {{{
 
 " place history folder under ~/.cache/yankring-history
-let g:yankring_history_dir="$HOME/.cache/"
-let g:yankring_history_file = 'yankring-history.txt'
+let g:yankring_history_dir  = "~/.cache/"
+let g:yankring_history_file = 'yankring-history'
 
 " yankring defaults overlaps w/ CtrlP
 let g:yankring_replace_n_pkey='‘' "option+[
 let g:yankring_replace_n_nkey='“' "option+]
 
-" airline theme + powerline fonts
-"let g:airline_theme='luna'
 
-" UI specific fonts and themes
+" Unite ================================================================== {{{
+
+let g:unite_source_grep_command='ag'
+let g:unite_source_grep_default_opts='--nogroup --nocolor'
+let g:unite_source_grep_recursive_opt=''
+
+call unite#custom#profile('default', 'context', {
+      \'start_insert': 1
+      \} )
+
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+
 if has("gui_running")
-  let g:airline_powerline_fonts=1
-
   " '❫ ' U+276B, UTF-8: E2 9D AB
   let g:unite_prompt='❫ '
-  let g:ycm_error_symbol='❫ '
-  let g:ycm_warning_symbol='❫ '
-  let NERDTreeDirArrows=1
 endif
 
 " }}}
+" }}}
 
 " Syntastic ============================================================== {{{
-
+"
+let g:syntastic_error_symbol='✗'
+let g:syntastic_warning_symbol='⚠'
+let g:syntastic_style_error_symbol='S✗'
+let g:syntastic_sytle_warning_symbol='S⚠'
+let g:syntastic_always_populate_loc_list=1
+let g:syntastic_python_checkers=['pep8', 'flake8']
 " clang complete
 let g:clang_library_path="/Library/Developer/CommandLineTools/usr/lib/"
 
@@ -557,7 +611,6 @@ let g:syntastic_objcpp_auto_refresh_includes=1
 let g:formatprg_cpp="uncrustify"
 let g:formatprg_args_expr_cpp='" -lCPP -f %"'
 " }}}
-
 
 " }}}
 
@@ -589,7 +642,7 @@ function! s:DiffWithSaved()
 endfunction
 com! DiffSaved call s:DiffWithSaved()
 
-" see unsaved changes in ksdiff
+" see unsaved changes in ksdiff (Kaleidoscope)
 function! s:KSDiffWithSaved()
   :silent !mkdir -p /tmp/vimtemp
   :silent w! /tmp/vimtemp/%:t
@@ -597,7 +650,9 @@ function! s:KSDiffWithSaved()
 endfunction
 com! KSDiffSaved call s:KSDiffWithSaved()
 
+" add python search folders to path
 function! s:AddPythonPathsToPath()
+  " load paths only once
   if !exists('g:add_pyathon_paths_complete')
 
 python << END_PYTHON
@@ -612,71 +667,90 @@ END_PYTHON
 endfunction
 com! AddPythonPathsToPath call s:AddPythonPathsToPath()
 
+" get TODOs from current file
+function! s:TodoCurrentFile()
+  :silent vimgrep TODO\|FIXME\|XXX\|@todo %
+  :silent copen
+endfunction
+com! TodoCurrentFile call s:TodoCurrentFile()
+
+" find TODOs recursive
+function! s:TodoRecursive()
+  :silent grep "TODO|FIXME|XXX|@todo" .
+  :silent copen
+endfunction
+com! TodoRecursive call s:TodoRecursive()
+
 " }}}
 
 " Auto commands ========================================================== {{{
 
-augroup variousGroup
-    autocmd!
-
-    " save when window losts focus
-    autocmd FocusLost * :wa
-
-    " remove whitespace on save
-    autocmd BufWritePre *.hh,*.hpp,*.m*,*.c*,*.py,*.rb,*.ninja,.vimrc :%s/\s\+$//e
-
-    " disable syntax hl for huge files
-    autocmd BufWinEnter * if line2byte(line("$") + 1) > 1000000 | syntax clear | endif
-
-    " change the working directory to the current file's directory
-    autocmd BufEnter * silent! lcd %:p:h
-augroup END
+" File type specific autocommands =======================================  {{{
 
 augroup fileTypesGroup
-    autocmd!
+  autocmd!
 
-    " set codepage and style for .nfo files
-    autocmd BufReadPre,BufNewFile *.nfo setlocal encoding=cp437 lines=50 columns=85
-                \colo ir_black
+  " set codepage and style for .nfo files
+  autocmd BufReadPre,BufNewFile *.nfo setlocal encoding=cp437 lines=50 columns=85
+              \colo ir_black
 
-    " set custom tabsize for yaml/*html* files
-    autocmd BufReadPre,BufNewFile *.yml setlocal ts=2 sw=2 sts=2 expandtab
-    autocmd BufReadPre,BufNewFile *.*htm* setlocal ts=2 sw=2 sts=2 expandtab
+  " set custom tabsize for yaml/*html* files
+  autocmd BufReadPre,BufNewFile *.yml setlocal ts=2 sw=2 sts=2 expandtab
+  autocmd BufReadPre,BufNewFile *.*htm* setlocal ts=2 sw=2 sts=2 expandtab
 
-    autocmd FileType python setlocal mp=python2.7\ % | call s:AddPythonPathsToPath()
-    " set custom syn hl for python (MacVim only)
-    if has("gui_running")
-        autocmd FileType python colo hemisu
-    endif
+  autocmd FileType python setlocal mp=python2.7\ % | call s:AddPythonPathsToPath()
+  " set custom syn hl for python (MacVim only)
+  if has("gui_running")
+      autocmd FileType python colo hemisu
+  endif
 
-    autocmd FileType vim setlocal ts=2 sw=2 sts=2 expandtab foldmethod=marker | colo apprentice
-    autocmd FileType zsh setlocal ts=2 sw=2 sts=2 expandtab | colo badwolf
+  autocmd FileType vim setlocal ts=2 sw=2 sts=2 expandtab foldmethod=marker | colo apprentice
+  autocmd FileType zsh setlocal ts=2 sw=2 sts=2 expandtab | colo badwolf
 
-    " set filetype for ObjC++ files
-    autocmd BufRead,BufNewFile *.m setlocal filetype=objc
-    autocmd BufRead,BufNewFile *.mm setlocal filetype=objcpp
+  " set filetype for ObjC++ files
+  autocmd BufRead,BufNewFile *.m setlocal filetype=objc
+  autocmd BufRead,BufNewFile *.mm setlocal filetype=objcpp
 
-    " enable ObjC enhancements for ObjC++ as well
-    autocmd FileType objcpp ru after/syntax/objc_enhanced.vim
-                \| let b:match_words = '@\(implementation\|interface\):@end'
-    autocmd FileType snippets setlocal noexpandtab
-
+  " enable ObjC enhancements for ObjC++ as well
+  autocmd FileType objcpp ru after/syntax/objc_enhanced.vim
+              \| let b:match_words = '@\(implementation\|interface\):@end'
+  autocmd FileType snippets setlocal noexpandtab
 augroup END
 
 augroup switchGroup
-    autocmd Filetype python let b:switch_custom_definitions=
-                \[
-                \   {
-                \       'xrange': 'range',
-                \       ' range': ' xrange',
-                \   }
-                \]
+  autocmd!
+  autocmd Filetype python let b:switch_custom_definitions=
+              \[
+              \   {
+              \       'xrange': 'range',
+              \       ' range': ' xrange',
+              \   }
+              \]
 augroup END
+" }}}
+
+" Misc autocommands ====================================================== {{{
+
+augroup variousGroup
+  autocmd!
+
+  " save when window losts focus
+  autocmd FocusLost * :wa
+
+  " remove whitespace on save
+  autocmd BufWritePre *.hh,*.hpp,*.m*,*.c*,*.py,*.rb,*.ninja,.vimrc :%s/\s\+$//e
+
+  " disable syntax hl for huge files
+  autocmd BufWinEnter * if line2byte(line("$") + 1) > 1000000 | syntax clear | endif
+
+  " change the working directory to the current file's directory
+  autocmd BufEnter * silent! lcd %:p:h
+augroup END
+" }}}
 
 " }}}
 
 " Keyboard mappings ====================================================== {{{
-
 
 " Navigation ============================================================= {{{
 
@@ -741,17 +815,18 @@ nnoremap <space> za
 " }}}
 
 " Plugin mappings ======================================================== {{{
-"
-" vim-fugitive mappings
+
+" vim-fugitive mappings ================================================-- {{{
 nnoremap [fugitive]  <Nop>
 nmap    <Leader>g [fugitive]
 
 nnoremap <silent> [fugitive]s   :Gstatus<CR>
 nnoremap <silent> [fugitive]c   :Gcommit<CR>
 nnoremap <silent> [fugitive]d   :Gdiff<CR>
+"}}}
 
+" Unite mappings  ======================================================== {{{
 
-" Unite mappings
 nnoremap [unite]    <Nop>
 nmap f  [unite]
 
@@ -764,12 +839,22 @@ nnoremap <silent> [unite]b   :<C-u>Unite buffer<CR>
 nnoremap <silent> [unite]fr  :<C-u>Unite file_rec/async<CR>
 nnoremap <silent> [unite]g   :<C-u>Unite grep<CR>
 
-" tool windows
-nnoremap <silent> <Leader>nt   :<C-u>NERDTree<CR>
-nnoremap <silent> <Leader>tb   :<C-u>TagbarToggle<CR>
-nnoremap <silent> <Leader>uu   :<C-u>GundoToggle<CR>
+" }}}
 
-" EasyMotion mappings
+" YouCompleteMe mappings  ================================================ {{{
+
+noremap [YCM] <Nop>
+nmap <Leader>y [YCM]
+nmap [YCM]d   :<C-u>YcmComleter GoToDefinition<CR>
+nmap [YCM]e   :<C-u>YcmComleter GoToDeclaration<CR>
+nmap [YCM]g   :<C-u>YcmComleter GoTo<CR>
+nmap [YCM]i   :<C-u>YcmComleter GoToImplementation<CR>
+
+
+" }}}
+
+" EasyMotion mappings ==================================================== {{{
+
 " backlash to activate
 map <Leader> <Plug>(easymotion-prefix)
 "nmap s <Plug>(easymotion-s2)
@@ -777,8 +862,11 @@ map <Leader> <Plug>(easymotion-prefix)
 " replace normal search
 map  / <Plug>(easymotion-sn)
 omap / <Plug>(easymotion-tn)
+" }}}
 
-" 1. split to tiled windows
+" GoldenView ============================================================= {{{
+
+" split to tiled windows
 nmap <silent> <C-L>  <Plug>GoldenViewSplit
 
 " quickly switch current window with the main pane
@@ -790,22 +878,34 @@ nmap <silent> [layout]t    <Plug>GoldenViewSwitchToggle
 
 " resize current window appropriately
 nmap <silent> <Leader>[layout]l    <Plug>GoldenViewResize
+" }}}
 
-" Tabular
+" Tabular ================================================================ {{{
+
 noremap [tabular] <Nop>
 nmap <Leader>t [tabular]
 nmap [tabular]p  :<C-u>Tabularize /:/l0l0l0l1<CR>
 vmap [tabular]p  :<C-u>Tabularize /:/l0l0l0l1<CR>
 vmap [tabular]h  :<C-u>Tabularize /#/<CR>
 
+
 nnoremap [tabular]s :<C-u>Tabularize<Space>/
 nnoremap <silent> [tabular]t   :<C-u>Tabularize<CR>
 
+" }}}
+
+" Misc =================================================================== {{{
+
+" tool windows
+nnoremap <silent> <Leader>nt   :<C-u>NERDTree<CR>
+nnoremap <silent> <Leader>tb   :<C-u>TagbarToggle<CR>
+nnoremap <silent> <Leader>uu   :<C-u>GundoToggle<CR>
 " switch
 nnoremap <Leader><Leader>s :Switch<CR>
 
 " UltiSnips fixes
 inoremap <c-x><c-k> <c-x><c-k>
+" }}}
 
 " }}}
 
