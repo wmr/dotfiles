@@ -411,6 +411,8 @@ endif
 
 " CtrlP ================================================================== {{{
 
+" show MRU files by default
+let g:ctrlp_cmd='CtrlPMRU'
 "let g:ctrlp_match_window = 'bottom,order:ttb'
 let g:ctrlp_switch_buffer=0
 let g:ctrlp_working_path_mode=0
@@ -667,16 +669,20 @@ END_PYTHON
 endfunction
 com! AddPythonPathsToPath call s:AddPythonPathsToPath()
 
+let s:todo_search_str="TODO|FIXME|NOTE|@todo"
+
 " get TODOs from current file
 function! s:TodoCurrentFile()
-  :silent vimgrep TODO\|FIXME\|XXX\|@todo %
+  exe "silent! vimgrep! ".escape(s:todo_search_str, '|')." ".expand('%:p')
+  "":silent vimgrep! TODO\|FIXME\|NOTE\|@todo %
   :silent copen
 endfunction
 com! TodoCurrentFile call s:TodoCurrentFile()
 
 " find TODOs recursive
 function! s:TodoRecursive()
-  :silent grep "TODO|FIXME|XXX|@todo" .
+  exe "silent grep! ".escape(shellescape(s:todo_search_str), '|')." ".getcwd()
+  ":silent grep! "TODO\|FIXME\|NOTE\|@todo" .
   :silent copen
 endfunction
 com! TodoRecursive call s:TodoRecursive()
@@ -895,6 +901,10 @@ nnoremap <silent> [tabular]t   :<C-u>Tabularize<CR>
 " }}}
 
 " Misc =================================================================== {{{
+
+" Todo stuff
+nnoremap <silent> <Leader>tf  :<C-u>TodoCurrentFile<CR>
+nnoremap <silent> <Leader>tr  :<C-u>TodoRecursive<CR>
 
 " tool windows
 nnoremap <silent> <Leader>nt   :<C-u>NERDTree<CR>
