@@ -674,7 +674,6 @@ let s:todo_search_str="TODO|FIXME|NOTE|@todo"
 " get TODOs from current file
 function! s:TodoCurrentFile()
   exe "silent! vimgrep! ".escape(s:todo_search_str, '|')." ".expand('%:p')
-  "":silent vimgrep! TODO\|FIXME\|NOTE\|@todo %
   :silent copen
 endfunction
 com! TodoCurrentFile call s:TodoCurrentFile()
@@ -682,7 +681,6 @@ com! TodoCurrentFile call s:TodoCurrentFile()
 " find TODOs recursive
 function! s:TodoRecursive()
   exe "silent grep! ".escape(shellescape(s:todo_search_str), '|')." ".getcwd()
-  ":silent grep! "TODO\|FIXME\|NOTE\|@todo" .
   :silent copen
 endfunction
 com! TodoRecursive call s:TodoRecursive()
