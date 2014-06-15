@@ -1,3 +1,19 @@
+# overwrite default snippets
+priority -49
+
+#! header // use python2.7 by def
+snippet #! "Shebang header for python2.7 scripts" b
+#!/usr/bin/env python2.7
+# encoding: utf-8
+$0
+endsnippet
+
+snippet #!3 "Sheband header for python3 scripts" b
+#!/usr/bin/env python3
+# encoding: utf-8
+$0
+endsnippet
+
 snippet head "python header" b
 #  ${1:<project name>}
 #  `!v @%`
