@@ -1,6 +1,6 @@
 " ============================================================================
 "
-" .vimrc // OSX // v1.4.2
+" .vimrc // OSX // v1.4.4
 " (c) 2014 // wmr
 "
 " ============================================================================
@@ -21,21 +21,21 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 " API ==================================================================== {{{
 
 let g:neobundle_ext_vimproc_updcmd = has('win64') ?
-      \ 'tools\\update-dll-mingw 64' : 'tools\\update-dll-mingw 32'
+      \ 'tools\\update-dll-mingw 64': 'tools\\update-dll-mingw 32'
 
 " background process support // used by unite and NeoBundle itself
 NeoBundle 'Shougo/vimproc.vim', {'build':
       \{'windows': g:neobundle_ext_vimproc_updcmd,
-      \'cygwin': 'make -f make_cygwin.mak',
-      \'mac': 'make -f make_mac.mak',
-      \'unix': 'make -f make_unix.mak'}}
+      \ 'cygwin' : 'make -f make_cygwin.mak',
+      \ 'mac'    : 'make -f make_mac.mak',
+      \ 'unix'   : 'make -f make_unix.mak'}}
+
+" Web api for plugins
+NeoBundle 'mattn/webapi-vim'
 
 " }}}
 
 " Usability ============================================================== {{{
-
-" Web api for plugins
-NeoBundle 'mattn/webapi-vim'
 
 " Creating gists
 NeoBundle 'mattn/gist-vim'
@@ -45,6 +45,12 @@ NeoBundle 'tpope/vim-dispatch'
 
 " Git wrapper
 NeoBundle 'tpope/vim-fugitive'
+
+" Git commit browser
+NeoBundle 'int3/vim-extradite'
+
+" show hunks
+NeoBundle 'mhinz/vim-signify'
 
 " Edit text surrounding a selection
 NeoBundle 'tpope/vim-surround'
@@ -355,11 +361,9 @@ if has('gui_running')
   set guifont=Monaco\ for\ Powerline:h12
   set columns=105
 
-  colo hornet
-
   " MacVim specific settings
   if has('gui_macvim')
-    set transparency=3
+    set transparency=1
   endif
 
 endif
@@ -409,6 +413,25 @@ endif
 
 " }}}
 
+" Promptline ============================================================= {{{
+
+let g:promptline_theme = 'airline'
+
+let s:options = { 'left_sections': ['b', 'a'],
+      \ 'right_sections': ['warn', 'c'],
+      \ 'left_only_sections': ['b', 'a', 'c']
+      \ }
+
+let g:promptline_preset = {
+      \ 'a' : [ promptline#slices#user() ],
+      \ 'b' : [ promptline#slices#cwd() ],
+      \ 'c' : [ promptline#slices#vcs_branch(), promptline#slices#jobs() ],
+      \ 'warn' : [ promptline#slices#last_exit_code() ],
+      \ 'options': s:options,
+      \ }
+
+" }}}
+
 " CtrlP ================================================================== {{{
 
 " show MRU files by default
@@ -454,10 +477,20 @@ let g:makeshift_systems={
 let g:ycm_autoclose_preview_window_after_completion=1
 let g:ycm_global_ycm_extra_conf="~/.vim/.ycm_extra_conf.py"
 
-"if has('gui_running')
-  "let g:ycm_error_symbol='❫ '
-  "let g:ycm_warning_symbol='❫ '
-"endif
+" add nfo files to blacklist
+let g:ycm_filetype_blacklist = {
+      \ 'tagbar'  : 1,
+      \ 'qf'      : 1,
+      \ 'notes'   : 1,
+      \ 'markdown': 1,
+      \ 'unite'   : 1,
+      \ 'text'    : 1,
+      \ 'vimwiki' : 1,
+      \ 'pandoc'  : 1,
+      \ 'infolog' : 1,
+      \ 'mail'    : 1,
+      \ 'nfo'     : 1
+      \}"
 
 " }}}
 
@@ -468,8 +501,8 @@ let g:tagbar_ctags_bin='/usr/local/bin/ctags'
 
 " add a definition for Objective-C to tagbar // needs build ctags from HEAD
 let g:tagbar_type_objc = {
-    \ 'ctagstype' : 'ObjectiveC',
-    \ 'kinds'     : [
+    \ 'ctagstype': 'ObjectiveC',
+    \ 'kinds'    : [
       \ 'i:interface',
       \ 'I:implementation',
       \ 'p:Protocol',
@@ -484,31 +517,37 @@ let g:tagbar_type_objc = {
       \ 'e:enumeration',
       \ 'M:preprocessor_macro',
     \ ],
-    \ 'sro'        : ' ',
-    \ 'kind2scope' : {
-      \ 'i' : 'interface',
-      \ 'I' : 'implementation',
-      \ 'p' : 'Protocol',
-      \ 's' : 'type_structure',
-      \ 'e' : 'enumeration'
+    \ 'sro'       : ' ',
+    \ 'kind2scope': {
+      \ 'i': 'interface',
+      \ 'I': 'implementation',
+      \ 'p': 'Protocol',
+      \ 's': 'type_structure',
+      \ 'e': 'enumeration'
     \ },
     \ 'scope2kind' : {
-      \ 'interface'      : 'i',
-      \ 'implementation' : 'I',
-      \ 'Protocol'       : 'p',
-      \ 'type_structure' : 's',
-      \ 'enumeration'    : 'e'
+      \ 'interface'     : 'i',
+      \ 'implementation': 'I',
+      \ 'Protocol'      : 'p',
+      \ 'type_structure': 's',
+      \ 'enumeration'   : 'e'
     \ }
   \ }
 
 " add a definition for zsh support (requires config in ~/.ctags).
 let g:tagbar_type_zsh = {
       \ 'ctagstype': 'zsh',
-      \ 'kinds': [
-      \ 'f:functions:1'
+      \ 'kinds'    : [
+        \ 'f:functions:1'
       \ ],
       \ 'fold': 0
       \ }
+
+" }}}
+
+" Signify ================================================================= {{{
+
+let g:signify_disable_by_default = 1
 
 " }}}
 
@@ -550,13 +589,14 @@ let g:UltiSnipsJumpBackwardTrigger="<S-tab>"
 " YankRing =============================================================== {{{
 
 " place history folder under ~/.cache/yankring-history
-let g:yankring_history_dir  = "~/.cache/"
-let g:yankring_history_file = 'yankring-history'
+let g:yankring_history_dir="~/.cache/"
+let g:yankring_history_file='yankring-history'
 
 " yankring defaults overlaps w/ CtrlP
 let g:yankring_replace_n_pkey='‘' "option+[
 let g:yankring_replace_n_nkey='“' "option+]
 
+" }}}
 
 " Unite ================================================================== {{{
 
@@ -565,7 +605,7 @@ let g:unite_source_grep_default_opts='--nogroup --nocolor'
 let g:unite_source_grep_recursive_opt=''
 
 call unite#custom#profile('default', 'context', {
-      \'start_insert': 1
+        \'start_insert': 1
       \} )
 
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
@@ -576,14 +616,14 @@ if has("gui_running")
 endif
 
 " }}}
-" }}}
 
 " Syntastic ============================================================== {{{
-"
+
 let g:syntastic_error_symbol='✗'
 let g:syntastic_warning_symbol='⚠'
 let g:syntastic_style_error_symbol='S✗'
 let g:syntastic_sytle_warning_symbol='S⚠'
+
 let g:syntastic_always_populate_loc_list=1
 let g:syntastic_python_checkers=['pep8', 'flake8']
 " clang complete
@@ -618,8 +658,15 @@ let g:formatprg_args_expr_cpp='" -lCPP -f %"'
 
 " Functions ============================================================== {{{
 
+function! s:CMake()
+  let cmd=&makeprg.' '
+  let cmd=substitute(cmd, "%", expand('%:p'), "")
+  exe 'ConqueTermSplit' cmd
+endfunction
+com! CMake call s:CMake()
+
 " use ConqueTerm w/ keyword progs
-function! ConqueMan()
+function! s:ConqueMan()
   let cmd = &keywordprg . ' '
   if cmd ==# 'man ' || cmd ==# 'man -s '
     if v:count > 0
@@ -631,7 +678,7 @@ function! ConqueMan()
   let cmd .= expand('<cword>')
   exe 'ConqueTermSplit' cmd
 endfunction
-map K :<C-u>call ConqueMan()<CR>
+map K :<C-u>call s:ConqueMan()<CR>
 
 " see unsaved changes in vimdiff
 function! s:DiffWithSaved()
@@ -655,7 +702,7 @@ com! KSDiffSaved call s:KSDiffWithSaved()
 " add python search folders to path
 function! s:AddPythonPathsToPath()
   " load paths only once
-  if !exists('g:add_pyathon_paths_complete')
+  if !exists('g:add_python_paths_complete')
 
 python << END_PYTHON
 import os, sys, vim
@@ -665,7 +712,7 @@ for p in sys.path:
 END_PYTHON
 
   endif
-  let g:add_pyathon_paths_complete=1
+  let g:add_python_paths_complete=1
 endfunction
 com! AddPythonPathsToPath call s:AddPythonPathsToPath()
 
@@ -680,10 +727,33 @@ com! TodoCurrentFile call s:TodoCurrentFile()
 
 " find TODOs recursive
 function! s:TodoRecursive()
+  " call shellescape() since the grep param executed in the shell
   exe "silent grep! ".escape(shellescape(s:todo_search_str), '|')." ".getcwd()
   :silent copen
 endfunction
 com! TodoRecursive call s:TodoRecursive()
+
+" TODO: check if this makes any sense at all
+function! s:SetupAutocmdForFileCleanupOnSave()
+  augroup fileCleanup
+    autocmd!
+    autocmd BufWritePre * call s:RetabIfExpandTabEnabled() | :%s/\s\+$//e
+  augroup END
+endfunction
+
+function! s:RetabIfExpandTabEnabled()
+  if &expandtab ==# 'expandtab'
+    :retab
+  endif
+endfunction
+
+function! s:SetMakePrgBasedOnShebang()
+  " \zs, \ze == capture start/end
+  let b:shebangExecutable=matchstr(getline(1), '^#!\zs\S\+\(\s\+\S\+\)*\ze')
+  let &makeprg=b:shebangExecutable." % $*"
+endfunction
+
+com! SetMakePrgBasedOnShebang call s:SetMakePrgBasedOnShebang()
 
 " }}}
 
@@ -694,31 +764,41 @@ com! TodoRecursive call s:TodoRecursive()
 augroup fileTypesGroup
   autocmd!
 
-  " set codepage and style for .nfo files
-  autocmd BufReadPre,BufNewFile *.nfo setlocal encoding=cp437 lines=50 columns=85
-              \colo ir_black
+  " set file type for .nfo files
+  autocmd BufReadPre *.nfo setlocal ft=nfo
 
-  " set custom tabsize for yaml/*html* files
-  autocmd BufReadPre,BufNewFile *.yml setlocal ts=2 sw=2 sts=2 expandtab
-  autocmd BufReadPre,BufNewFile *.*htm* setlocal ts=2 sw=2 sts=2 expandtab
+  " override filetype for ObjC++ files
+  autocmd BufReadPost,BufNewFile *.m setlocal filetype=objc
+  autocmd BufReadPost,BufNewFile *.mm setlocal filetype=objcpp
 
+  " retab/remove whitespace on save
+  autocmd FileType c,cpp,objc,objcpp,python,ruby,ninja,vim
+        \ call s:SetupAutocmdForFileCleanupOnSave()
+
+  " set the makeprg based on the shebang for scripts
   autocmd FileType python setlocal mp=python2.7\ % | call s:AddPythonPathsToPath()
-  " set custom syn hl for python (MacVim only)
-  if has("gui_running")
-      autocmd FileType python colo hemisu
-  endif
+  "autocmd FileType python,ruby,perl,zsh call s:SetMakePrgBasedOnShebang()
+  "autocmd BufWritePost *.py,*.rb,*.pl,*.zsh call s:SetMakePrgBasedOnShebang()
 
-  autocmd FileType vim setlocal ts=2 sw=2 sts=2 expandtab foldmethod=marker | colo apprentice
-  autocmd FileType zsh setlocal ts=2 sw=2 sts=2 expandtab | colo badwolf
+  " set codepage and style for .nfo files
+  autocmd FileType nfo setlocal diff encoding=cp437 lines=50 columns=85 laststatus=0 nonu
+        \ |setlocal bt=nofile bh=wipe nobl noswf ro
+        \ |colo badwolf
 
-  " set filetype for ObjC++ files
-  autocmd BufRead,BufNewFile *.m setlocal filetype=objc
-  autocmd BufRead,BufNewFile *.mm setlocal filetype=objcpp
+  " set custom tabsize for vim/zsh/yaml/*html* files
+  autocmd FileType vim,zsh,yaml,html setlocal ts=2 sw=2 sts=2 expandtab
+
+  " add PYTHONPATH elements to path, use python2.7 as makeprogram by default
+  autocmd FileType vim setlocal foldmethod=marker
+  autocmd FileType zsh colo badwolf
 
   " enable ObjC enhancements for ObjC++ as well
   autocmd FileType objcpp ru after/syntax/objc_enhanced.vim
               \| let b:match_words = '@\(implementation\|interface\):@end'
+
+  " keep tabs for snippets, so get expanded according to active sts setting
   autocmd FileType snippets setlocal noexpandtab
+
 augroup END
 
 augroup switchGroup
@@ -738,17 +818,17 @@ augroup END
 augroup variousGroup
   autocmd!
 
+  autocmd BufWritePre * call s:RetabIfExpandTabEnabled() | :%s/\s\+$//e
+
   " save when window losts focus
   autocmd FocusLost * :wa
-
-  " remove whitespace on save
-  autocmd BufWritePre *.hh,*.hpp,*.m*,*.c*,*.py,*.rb,*.ninja,.vimrc :%s/\s\+$//e
 
   " disable syntax hl for huge files
   autocmd BufWinEnter * if line2byte(line("$") + 1) > 1000000 | syntax clear | endif
 
   " change the working directory to the current file's directory
   autocmd BufEnter * silent! lcd %:p:h
+
 augroup END
 " }}}
 
@@ -827,12 +907,14 @@ nmap    <Leader>g [fugitive]
 nnoremap <silent> [fugitive]s   :Gstatus<CR>
 nnoremap <silent> [fugitive]c   :Gcommit<CR>
 nnoremap <silent> [fugitive]d   :Gdiff<CR>
+nnoremap <silent> [fugitive]l   :Extradite<CR>
+nnoremap <silent> [fugitive]i   :SignifyToggle<CR>
 "}}}
 
 " Unite mappings  ======================================================== {{{
 
 nnoremap [unite]    <Nop>
-nmap f  [unite]
+nmap ,n  [unite]
 
 nnoremap <silent> [unite]c  :<C-u>UniteWithCurrentDir
             \ -buffer-name=files buffer bookmark file<CR>
@@ -849,10 +931,10 @@ nnoremap <silent> [unite]g   :<C-u>Unite grep<CR>
 
 noremap [YCM] <Nop>
 nmap <Leader>y [YCM]
-nmap [YCM]d   :<C-u>YcmComleter GoToDefinition<CR>
-nmap [YCM]e   :<C-u>YcmComleter GoToDeclaration<CR>
-nmap [YCM]g   :<C-u>YcmComleter GoTo<CR>
-nmap [YCM]i   :<C-u>YcmComleter GoToImplementation<CR>
+nmap [YCM]d   :<C-u>YcmCompleter GoToDefinition<CR>
+nmap [YCM]e   :<C-u>YcmCompleter GoToDeclaration<CR>
+nmap [YCM]g   :<C-u>YcmCompleter GoTo<CR>
+nmap [YCM]i   :<C-u>YcmCompleter GoToImplementation<CR>
 
 
 " }}}
@@ -922,9 +1004,10 @@ inoremap <c-x><c-k> <c-x><c-k>
 " Color scheme =========================================================== {{{
 
 if has('gui_running')
-    colo hornet
+    colo busybee
 else
     colo distinguished
 endif
 
 " }}}
+
