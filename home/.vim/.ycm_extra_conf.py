@@ -48,7 +48,7 @@ flags = [
     # relevant for c++ headers.
     # For a C project, you would set this to 'c' instead of 'c++'.
     '-x',
-    'c++',
+    'objc++',
     '-I',
     '/usr/local/Cellar/boost/1.55.0_2/include/'
     '-isystem',
