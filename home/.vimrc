@@ -218,6 +218,7 @@ set nobackup
 set nowb
 set noswapfile
 set undofile
+set undodir=~/.vim/undo/
 
 " hide buffers instead of closing them
 set hidden
@@ -425,7 +426,7 @@ let s:options = { 'left_sections': ['b', 'a'],
 let g:promptline_preset = {
       \ 'a' : [ promptline#slices#user() ],
       \ 'b' : [ promptline#slices#cwd() ],
-      \ 'c' : [ promptline#slices#vcs_branch(), promptline#slices#jobs() ],
+      \ 'c' : [ promptline#slices#git_status(), promptline#slices#vcs_branch(), promptline#slices#jobs(), promptline#slices#python_virtualenv() ],
       \ 'warn' : [ promptline#slices#last_exit_code() ],
       \ 'options': s:options,
       \ }
@@ -489,7 +490,8 @@ let g:ycm_filetype_blacklist = {
       \ 'pandoc'  : 1,
       \ 'infolog' : 1,
       \ 'mail'    : 1,
-      \ 'nfo'     : 1
+      \ 'nfo'     : 1,
+      \ 'conf'    : 1
       \}"
 
 " }}}
@@ -917,7 +919,7 @@ nnoremap [unite]    <Nop>
 nmap ,n  [unite]
 
 nnoremap <silent> [unite]c  :<C-u>UniteWithCurrentDir
-            \ -buffer-name=files buffer bookmark file<CR>
+            \ -buffer-name=files buffer bookmark file file/new<CR>
 
 nnoremap <silent> [unite]s   :<C-u>Unite<CR>
 nnoremap <silent> [unite]t   :<C-u>Unite tab<CR>
