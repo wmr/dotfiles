@@ -42,13 +42,14 @@ flags = [
     '-Wno-variadic-macros',
     '-fexceptions',
     '-DNDEBUG',
+    '-framework Cocoa'
     '-std=c++1y',
     # ...and the same thing goes for the magic -x option which specifies the
     # language that the files to be compiled are written in. This is mostly
     # relevant for c++ headers.
     # For a C project, you would set this to 'c' instead of 'c++'.
     '-x',
-    'objc++',
+    'objective-c++',
     '-I',
     '/usr/local/Cellar/boost/1.55.0_2/include/'
     '-isystem',
