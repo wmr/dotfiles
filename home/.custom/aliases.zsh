@@ -5,6 +5,7 @@ alias zshconf="${EDITOR} ~/.zshrc"
 alias ltrah='ls -ltrah'
 
 alias ack='nocorrect ack'
+alias ag='nocorrect ag'
 alias cd='nocorrect cd'
 alias cp='nocorrect cp'
 alias ebuild='nocorrect ebuild'
@@ -50,6 +51,16 @@ alias llk='ll -Sr'       # Lists sorted by size, largest last.
 alias llt='ll -tr'       # Lists sorted by date, most recent last.
 alias llc='llt -c'       # Lists sorted by date, most recent last, shows change time.
 alias llu='llt -u'       # Lists sorted by date, most recent last, shows access time.
+
+if (( $+commands[tmux] )); then
+  alias tmux-ls="tmux list-sessions"
+
+  # attach to given session or the last
+  function _wmr_tmux_attach() {
+    [[ ! -z $1 ]] && tmux attach -t $* || tmux attach
+  }
+  alias tma=_wmr_tmux_attach
+fi
 
 if (( $+commands[curl] )); then
   alias get='curl --continue-at - --location --progress-bar --remote-name --remote-time'
@@ -98,3 +109,14 @@ alias d='fasd -d'    # pick directory
 alias z='fasd_cd -d' # cd to dir
 alias v='f -e vim'   # quickly open files with vim
 alias j=z            # mimic autojump
+
+# accept extended regex by default
+alias sed='sed -E'
+alias grep='grep -E'
+
+#
+# global aliases
+#
+alias -g C='| wc -l'
+alias -g G='| grep'
+
