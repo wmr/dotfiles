@@ -17,10 +17,10 @@
   done
 } &!
 
-# print figlet and a random, offending cookie. 
-# The not-offending ones are boring anyway
-if (( $+commands[figlet] && $+commands[fortune] )) 
-then 
+# print figlet and a random, offending cookie.
+# The non-offending ones are boring anyway
+if (( $+commands[figlet] && $+commands[fortune] ))
+then
     figlet -f ticks wmr101
     fortune -o && print
 fi
