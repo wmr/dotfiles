@@ -37,6 +37,9 @@ NeoBundle 'mattn/webapi-vim'
 
 " Usability ============================================================== {{{
 
+" Dash plugin
+NeoBundle 'rizzatti/dash.vim'
+
 " Creating gists
 NeoBundle 'mattn/gist-vim'
 
@@ -606,6 +609,9 @@ let g:unite_source_grep_command='ag'
 let g:unite_source_grep_default_opts='--nogroup --nocolor'
 let g:unite_source_grep_recursive_opt=''
 
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+
+
 call unite#custom#profile('default', 'context', {
         \'start_insert': 1
       \} )
@@ -926,6 +932,7 @@ nnoremap <silent> [unite]t   :<C-u>Unite tab<CR>
 nnoremap <silent> [unite]b   :<C-u>Unite buffer<CR>
 nnoremap <silent> [unite]fr  :<C-u>Unite file_rec/async<CR>
 nnoremap <silent> [unite]g   :<C-u>Unite grep<CR>
+nnoremap <silent> [unite]r   :<C-u>Unite -start-insert file_rec/async:!<CR>
 
 " }}}
 
@@ -983,6 +990,9 @@ nnoremap <silent> [tabular]t   :<C-u>Tabularize<CR>
 " }}}
 
 " Misc =================================================================== {{{
+
+" Dash
+nmap <silent> <Leader>K   <Plug>DashSearch
 
 " Todo stuff
 nnoremap <silent> <Leader>tf  :<C-u>TodoCurrentFile<CR>
