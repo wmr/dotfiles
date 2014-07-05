@@ -27,3 +27,6 @@ source "${HOME}/.custom/zaw/zaw.zsh"
 
 # automatically remove duplicates
 typeset -U path cdpath fpath manpath
+
+# enable auto complete in python interactive shell by default
+export PYTHONSTARTUP="${HOME}/.pyrc"
