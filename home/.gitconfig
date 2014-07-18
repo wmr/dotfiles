@@ -32,6 +32,7 @@
 [alias]
     st = status
     unstage = rm --cached
+	co = commit
 [credential]
     helper = osxkeychain
 [push]
