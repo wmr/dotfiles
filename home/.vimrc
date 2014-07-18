@@ -459,8 +459,6 @@ let g:ConqueTerm_StartMessages=0
 " NERDTree =============================================================== {{{
 
 " switch off special arrow characters in NERDTree by default
-
-" UI specific fonts and themes
 if has('gui_running')
   let NERDTreeDirArrows=1
 else
@@ -470,12 +468,20 @@ endif
 " close the NERDTree tool window after opening a file
 let NERDTreeQuitOnOpen=1
 
+" bookmarks file
+let NERDTreeBookmarksFile=expand('~/.vim/.NERDTreeBookmarks')
+
+" }}}
+
+" Makeshift =============================================================  {{{
+
 " add support for ninja in makeshift
 let g:makeshift_systems={
       \'build.ninja':'ninja'
-      \}
+      \}"
+
 " }}}
-"
+
 " YouCompleteMe ========================================================== {{{
 
 let g:ycm_autoclose_preview_window_after_completion=1
