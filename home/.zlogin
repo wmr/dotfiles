@@ -21,6 +21,6 @@
 # The non-offending ones are boring anyway
 if (( $+commands[figlet] && $+commands[fortune] ))
 then
-    figlet -f ticks wmr101
+    figlet -f ticks ${$(hostname):r:r}
     fortune -o && print
 fi
