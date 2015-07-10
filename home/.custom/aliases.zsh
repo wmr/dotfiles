@@ -128,11 +128,10 @@ alias j=z            # mimic autojump
 
 # accept extended regex by default
 alias sed='sed -E'
-alias grep='grep -E'
+alias grep='grep --color -E'
 
 #
 # global aliases
 #
 alias -g C='| wc -l'
 alias -g G='| grep'
-
