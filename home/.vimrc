@@ -134,13 +134,13 @@ NeoBundle 'scrooloose/nerdcommenter'
 " Close brackets automatically
 NeoBundle 'Raimondi/delimitMate'
 
-" Tree like overview of undo options
+" Tree like overview of undo option
 NeoBundle 'sjl/gundo.vim'
 
 " Text expander tool for html/xml
 NeoBundle 'mattn/emmet-vim'
 
-
+" YouCompleteMe
 NeoBundle 'Valloric/YouCompleteMe', {'build': {'mac': './install.sh --clang-completer'}}
 
 " Switch between text patterns
@@ -159,7 +159,16 @@ NeoBundle 'johnsyweb/vim-makeshift'
 NeoBundle 'godlygeek/tabular'
 
 " Various tools for go
-"NeoBundle 'fatih/vim-go'
+NeoBundle 'fatih/vim-go'
+
+" Rust
+NeoBundle 'rust-lang/rust.vim'
+
+" Gradle support
+NeoBundle 'tfnico/vim-gradle'
+
+" Scala support
+NeoBundle 'derekwyatt/vim-scala'
 
 " }}}
 
@@ -176,6 +185,7 @@ NeoBundle 'jonathanfilip/vim-lucius'
 
 " a bundle of many useful color schemes
 NeoBundle 'flazz/vim-colorschemes'
+NeoBundle 'morhetz/gruvbox'
 
 " }}}
 
