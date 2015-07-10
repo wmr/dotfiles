@@ -14,10 +14,10 @@ fi
 export UNCRUSTIFY_CONFIG="${HOME}/.vim/uc.cfg"
 
 # enable homeshick
-source "${HOME}/.custom/homeshick.zsh"
+#source "${HOME}/.custom/homeshick.zsh"
 
 # enable powerline
-source "${HOME}/.custom/powerline.zsh"
+#source "${HOME}/.custom/powerline.zsh"
 
 # enable custom aliases
 source "${HOME}/.custom/aliases.zsh"
