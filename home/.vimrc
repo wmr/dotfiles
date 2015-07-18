@@ -186,6 +186,7 @@ NeoBundle 'jonathanfilip/vim-lucius'
 " a bundle of many useful color schemes
 NeoBundle 'flazz/vim-colorschemes'
 NeoBundle 'morhetz/gruvbox'
+NeoBundle 'trusktr/seti.vim'
 
 " }}}
 
@@ -377,7 +378,7 @@ if has('gui_running')
 
   " MacVim specific settings
   if has('gui_macvim')
-    set transparency=1
+    set transparency=5
   endif
 
 endif
@@ -842,10 +843,8 @@ augroup END
 augroup variousGroup
   autocmd!
 
+  " auto retab
   autocmd BufWritePre * call s:RetabIfExpandTabEnabled() | :%s/\s\+$//e
-
-  " save when window losts focus
-  autocmd FocusLost * :wa
 
   " disable syntax hl for huge files
   autocmd BufWinEnter * if line2byte(line("$") + 1) > 1000000 | syntax clear | endif
