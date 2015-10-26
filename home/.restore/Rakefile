@@ -1,0 +1,100 @@
+require 'rake'
+
+#
+# Add colors to rake output
+#
+module Colors
+  def colorize(text, color_code)
+    "\033[#{color_code}m#{text}\033[0m"
+  end
+
+  {
+    :black    => 30,
+    :red      => 31,
+    :green    => 32,
+    :yellow   => 33,
+    :blue     => 34,
+    :magenta  => 35,
+    :cyan     => 36,
+    :white    => 37
+  }.each do |key, color_code|
+    define_method key do |text|
+      colorize(text, color_code)
+    end
+  end
+end
+
+include Colors
+
+BREW_PATH = '/usr/local/bin/brew'
+ZPREZTO_PATH = '~/.zprezto'
+SHELLS_CONFIG_PATH = '/etc/shells'
+NEOBUNDLE_PATH = '~/.vim/bundle/neobundle.vim/'
+
+task :checkBrew do
+    print yellow "Checking for brew installation... "
+    if not File.exist?(BREW_PATH)
+        puts red("Cannot find a brew installation")
+        puts yellow "Installing brew..."
+        sh 'ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"'
+    else
+        puts green "Brew is installed."
+    end
+end
+
+task :checkZprezto do
+    print yellow "Checking for zprezto installation... "
+    if not File.exists? File.expand_path ZPREZTO_PATH
+        puts red("Cannot find .zprezto dir")
+        puts yellow "Installing zprezto"
+        sh 'git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto" '
+    else
+        puts green "zprezto is installed."
+    end
+end
+
+task :checkNeoBundle do
+    if not File.exists? File.expand_path NEOBUNDLE_PATH
+        sh 'curl https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh | sh'
+    end
+end
+
+desc "bootstrap the environment for dotfiles"
+task :bootstrap => [:checkZprezto,:checkBrew,:updateBrew,:installCoreToolset,:pythonModules,:bsVimPlugins] do
+    sh "brew update"
+end
+
+desc "bootstrap NeoBundle plugins for vim"
+task :bsVimPlugins => [:checkNeoBundle] do
+    sh 'vim +NeoBundleInstall +qall'
+end
+
+desc "update Brew, tap dupes"
+task :updateBrew do
+    sh "brew update"
+    sh "brew tap homebrew/dupes"
+end
+
+desc "install zsh via Brew and set as default shell"
+task :installZsh do
+    sh "brew install zsh"
+    if `grep $(which zsh) /etc/shells`.strip == ""
+        puts yellow "Adding `which zsh` to the list of standard shells"
+        sh 'echo "/usr/local/bin/zsh" | sudo tee -a /etc/shells'
+        sh 'chsh -s $(which zsh)'
+    end
+end
+
+desc "install the core toolchain"
+task :installCoreToolset => [:installZsh] do
+    sh "brew install macvim --override-system-vim"
+    sh "brew install bash wget curl coreutils python python3 ruby git ctags grep fasd cmake tmux htop-osx"
+    sh "brew install ninja figlet fortune uncrustify reattach-to-user-namespace"
+end
+
+task :pythonModules do
+    sh "pip install --upgrade pip"
+    sh "pip install -U pep8 autopep8 BeautifulSoup beautifulsoup4 bottle flake8 pylint flask jinja2 jedi"
+    sh "pip install -U keyring nose periscope psutil powerline-status"
+
+end

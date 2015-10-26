@@ -1,0 +1,17 @@
+require 'rake'
+
+ID_RSA_PATH = File.expand_path "~/.ssh/id_rsa"
+
+desc 'Generate public key for current user'
+file ID_RSA_PATH do
+    sh "ssh-keygen -t rsa"
+end
+
+# TODO: fix double login
+desc 'Add the generated public key to the authorized keys list on remote host'
+task :addPubKey => ID_RSA_PATH do
+    sh "ssh root@wds mkdir -p .ssh"
+    sh "cat .ssh/id_rsa.pub | ssh root@wds 'cat >> .ssh/authorized_keys'"
+end
+
+task :default => :addPubKey
