@@ -1,8 +1,10 @@
 require 'rake'
 
+
 #
 # Add colors to rake output
 #
+
 module Colors
   def colorize(text, color_code)
     "\033[#{color_code}m#{text}\033[0m"
@@ -25,6 +27,11 @@ module Colors
 end
 
 include Colors
+
+
+#
+# consts
+#
 
 BREW_PATH = '/usr/local/bin/brew'
 ZPREZTO_PATH = '~/.zprezto'
@@ -59,12 +66,12 @@ task :checkNeoBundle do
     end
 end
 
-desc "bootstrap the environment for dotfiles"
-task :bootstrap => [:checkZprezto,:checkBrew,:updateBrew,:installCoreToolset,:pythonModules,:bsVimPlugins] do
+desc "restore the environment for dotfiles"
+task :restore => [:checkZprezto,:checkBrew,:updateBrew,:installCoreToolset,:pythonModules,:bsVimPlugins] do
     sh "brew update"
 end
 
-desc "bootstrap NeoBundle plugins for vim"
+desc "restore NeoBundle plugins for vim"
 task :bsVimPlugins => [:checkNeoBundle] do
     sh 'vim +NeoBundleInstall +qall'
 end
@@ -89,12 +96,12 @@ desc "install the core toolchain"
 task :installCoreToolset => [:installZsh] do
     sh "brew install macvim --override-system-vim"
     sh "brew install bash wget curl coreutils python python3 ruby git ctags grep fasd cmake tmux htop-osx"
-    sh "brew install ninja figlet fortune uncrustify reattach-to-user-namespace"
+    sh "brew install ag ninja figlet fortune uncrustify reattach-to-user-namespace"
 end
 
 task :pythonModules do
     sh "pip install --upgrade pip"
     sh "pip install -U pep8 autopep8 BeautifulSoup beautifulsoup4 bottle flake8 pylint flask jinja2 jedi"
-    sh "pip install -U keyring nose periscope psutil powerline-status"
+    sh "pip install -U keyring nose periscope transmissionrpc mechanize psutil powerline-status"
 
 end
