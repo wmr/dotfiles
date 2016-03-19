@@ -164,6 +164,9 @@ NeoBundle 'fatih/vim-go'
 " Rust
 NeoBundle 'rust-lang/rust.vim'
 
+" Swift
+NeoBundle 'toyamarinyon/vim-swift'
+
 " Gradle support
 NeoBundle 'tfnico/vim-gradle'
 
@@ -378,7 +381,7 @@ if has('gui_running')
 
   " MacVim specific settings
   if has('gui_macvim')
-    set transparency=5
+    set transparency=1
   endif
 
 endif
@@ -644,10 +647,10 @@ endif
 
 " Syntastic ============================================================== {{{
 
-let g:syntastic_error_symbol='✗'
-let g:syntastic_warning_symbol='⚠'
-let g:syntastic_style_error_symbol='S✗'
-let g:syntastic_sytle_warning_symbol='S⚠'
+"let g:syntastic_error_symbol='✗'
+"let g:syntastic_warning_symbol='⚠'
+"let g:syntastic_style_error_symbol='S✗'
+"let g:syntastic_sytle_warning_symbol='S⚠'
 
 let g:syntastic_always_populate_loc_list=1
 let g:syntastic_python_checkers=['pep8', 'flake8']
