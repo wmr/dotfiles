@@ -130,6 +130,9 @@ alias j=z            # mimic autojump
 alias sed='sed -E'
 alias grep='grep --color -E'
 
+# pygments
+alias pyg='pygmentize'
+
 #
 # global aliases
 #
