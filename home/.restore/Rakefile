@@ -30,7 +30,7 @@ include Colors
 
 
 #
-# consts
+# Consts
 #
 
 BREW_PATH = '/usr/local/bin/brew'
@@ -38,52 +38,94 @@ ZPREZTO_PATH = '~/.zprezto'
 SHELLS_CONFIG_PATH = '/etc/shells'
 NEOBUNDLE_PATH = '~/.vim/bundle/neobundle.vim/'
 
-task :checkBrew do
-    print yellow "Checking for brew installation... "
+CORE_TOOLSET = [
+  "macvim --override-system-vim",
+  :bash, :wget, :curl, :coreutils,
+  # Scripting
+  :python, :python3, :ruby,
+  # Development tools
+  :git, :ctags,
+  :grep, :ag, :fasd, :cmake, :ninja, :tmux,
+  :fortune, :uncrustify,
+  # Nice to have
+  :figlet, :fortune, :thefuck,
+  # OSX specific
+  "reattach-to-user-namespace", "htop-osx",
+]
+
+PYTHON_UNIVERSAL = [
+  # Code quality
+  :pep8, :autopep8,
+  :flake8, :pylint, :nose,
+  # Standard networking stuff
+  :beautifulsoup4,
+  :bottle,  :flask, :jinja2, :jedi,
+  :keyring, :transmissionrpc, :mechanize,
+  # Command line tools
+  :psutil, :pygments,
+  "powerline-status",
+]
+
+PYTHON2_ONLY = [
+  :periscope,
+  :BeautifulSoup
+]
+
+
+#
+# Tasks
+#
+
+desc "Ensure brew is installed"
+task :ensure_brew do
+    print yellow "??? Checking for 'brew' installation... "
     if not File.exist?(BREW_PATH)
-        puts red("Cannot find a brew installation")
-        puts yellow "Installing brew..."
+        puts red("✗ Cannot find a brew installation")
+        puts yellow "+++ brew..."
         sh 'ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"'
     else
-        puts green "Brew is installed."
+        puts green "✔︎ 'brew' is installed."
     end
 end
 
-task :checkZprezto do
-    print yellow "Checking for zprezto installation... "
+desc "Ensure zprezto is installed"
+task :ensure_zprezto do
+    print yellow "??? Checking for 'zprezto' installation... "
     if not File.exists? File.expand_path ZPREZTO_PATH
-        puts red("Cannot find .zprezto dir")
-        puts yellow "Installing zprezto"
+        puts red("✗ Cannot find .zprezto dir")
+        puts yellow "+++ zprezto"
         sh 'git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto" '
     else
-        puts green "zprezto is installed."
+        puts green "✔︎ 'zprezto' is installed."
     end
 end
 
-task :checkNeoBundle do
+desc "Ensure NeoBundle for vim is installed"
+task :ensure_neobundle do
+    print yellow "??? Checking for 'NeoBundle' installation... "
     if not File.exists? File.expand_path NEOBUNDLE_PATH
-        sh 'curl https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh | sh'
+        print yellow "+++ NeoBundle"
+        sh "curl https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh | sh"
+    else
+      puts green "✔︎ 'NeoBundle' is installed."
     end
 end
 
-desc "restore the environment for dotfiles"
-task :restore => [:checkZprezto,:checkBrew,:updateBrew,:installCoreToolset,:pythonModules,:bsVimPlugins] do
-    sh "brew update"
-end
-
-desc "restore NeoBundle plugins for vim"
-task :bsVimPlugins => [:checkNeoBundle] do
+desc "Restore NeoBundle plugins for vim"
+task :build_vim_plugins => [:ensure_neobundle] do
+    puts yellow "+++ vim bundles"
     sh 'vim +NeoBundleInstall +qall'
 end
 
-desc "update Brew, tap dupes"
-task :updateBrew do
+desc "Update Brew, tap dupes"
+task :update_brew => [:ensure_brew] do
     sh "brew update"
     sh "brew tap homebrew/dupes"
 end
 
-desc "install zsh via Brew and set as default shell"
-task :installZsh do
+desc "Install zsh via Brew and set as default shell"
+task :ensure_zsh => [:update_brew] do
+    puts yellow "+++ zsh..."
     sh "brew install zsh"
     if `grep $(which zsh) /etc/shells`.strip == ""
         puts yellow "Adding `which zsh` to the list of standard shells"
@@ -92,16 +134,32 @@ task :installZsh do
     end
 end
 
-desc "install the core toolchain"
-task :installCoreToolset => [:installZsh] do
-    sh "brew install macvim --override-system-vim"
-    sh "brew install bash wget curl coreutils python python3 ruby git ctags grep fasd cmake tmux htop-osx"
-    sh "brew install ag ninja figlet fortune uncrustify reattach-to-user-namespace"
+desc "Install the core toolset"
+task :install_core => [:ensure_zsh] do
+    puts yellow "+++ Installing core toolset..."
+    sh "brew install " + CORE_TOOLSET.join(" ")
 end
 
-task :pythonModules do
-    sh "pip install --upgrade pip"
-    sh "pip install -U pep8 autopep8 BeautifulSoup beautifulsoup4 bottle flake8 pylint flask jinja2 jedi"
-    sh "pip install -U keyring nose periscope transmissionrpc mechanize psutil powerline-status"
-
+desc "Install Python2 compatible modules"
+task :py2_modules do
+    puts yellow "+++ Python2 modules..."
+    sh "pip2 install --upgrade pip"
+    sh "pip2 install -U " + (PYTHON_UNIVERSAL + PYTHON2_ONLY).join(" ")
 end
+
+desc "Install Python3 compatible modules"
+task :py3_modules do
+  puts yellow "+++ Python3 modules..."
+  sh "pip3 install --upgrade pip"
+  sh "pip3 install -U " + PYTHON_UNIVERSAL.join(" ")
+end
+
+desc "Install both Python2 and 3 modules"
+task :py_modules => [:py2_modules, :py3_modules]
+
+desc "restore the environment for dotfiles"
+task :restore => [:ensure_zprezto, :update_brew, :install_core, :py_modules, :build_vim_plugins] do
+    sh "brew update"
+end
+
+task :default => [:restore]
