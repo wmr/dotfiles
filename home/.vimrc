@@ -7,216 +7,199 @@
 
 " Bundles ================================================================ {{{
 
-" NeoBundle initialization
+call plug#begin('~/.vim/plugged')
 
-if has('vim_starting')
-  set rtp+=~/.vim/bundle/neobundle.vim/
-endif
-
-call neobundle#begin(expand('~/.vim/bundle/'))
-
-" Fetch the NeoBundle itself
-NeoBundleFetch 'Shougo/neobundle.vim'
+Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 
 " API ==================================================================== {{{
 
-let g:neobundle_ext_vimproc_updcmd = has('win64') ?
-      \ 'tools\\update-dll-mingw 64': 'tools\\update-dll-mingw 32'
-
-" background process support // used by unite and NeoBundle itself
-NeoBundle 'Shougo/vimproc.vim', {'build':
-      \{'windows': g:neobundle_ext_vimproc_updcmd,
-      \ 'cygwin' : 'make -f make_cygwin.mak',
-      \ 'mac'    : 'make -f make_mac.mak',
-      \ 'unix'   : 'make -f make_unix.mak'}}
-
 " Web api for plugins
-NeoBundle 'mattn/webapi-vim'
+Plug 'mattn/webapi-vim'
 
 " }}}
 
 " Usability ============================================================== {{{
 
 " Dash plugin
-NeoBundle 'rizzatti/dash.vim'
+Plug 'rizzatti/dash.vim'
 
 " Creating gists
-NeoBundle 'mattn/gist-vim'
+Plug 'mattn/gist-vim'
 
 " Async build/dispatch
-NeoBundle 'tpope/vim-dispatch'
+Plug 'tpope/vim-dispatch'
 
 " Git wrapper
-NeoBundle 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'
 
 " Git commit browser
-NeoBundle 'int3/vim-extradite'
+Plug 'int3/vim-extradite'
 
 " show hunks
-NeoBundle 'mhinz/vim-signify'
+Plug 'mhinz/vim-signify'
 
 " Edit text surrounding a selection
-NeoBundle 'tpope/vim-surround'
+Plug 'tpope/vim-surround'
 
 " Shorthands for generic stuff
-NeoBundle 'tpope/vim-unimpaired'
+Plug 'tpope/vim-unimpaired'
 
 " Repeat last action
-NeoBundle 'tpope/vim-repeat'
+Plug 'tpope/vim-repeat'
 
 " Enhancements for date string literals
-NeoBundle 'tpope/vim-speeddating'
+Plug 'tpope/vim-speeddating'
 
 " Powerline alternative
-NeoBundle 'bling/vim-airline'
+Plug 'bling/vim-airline'
 
 " easy naviagation within files
-NeoBundle 'Lokaltog/vim-easymotion'
+Plug 'Lokaltog/vim-easymotion'
 
 " Smart selection
-NeoBundle 'gcmt/wildfire.vim'
+Plug 'gcmt/wildfire.vim'
 
 " Fully capable terminal window
-NeoBundle 'pthrasher/conqueterm-vim'
+Plug 'pthrasher/conqueterm-vim'
 
 " Generate powerline prompts
-NeoBundle 'edkolev/promptline.vim'
+Plug 'edkolev/promptline.vim'
 
 " yank history
-NeoBundle 'vim-scripts/YankRing.vim'
+Plug 'vim-scripts/YankRing.vim'
 
-" display  marks
-NeoBundle 'kshenoy/vim-signature'
+" display marks
+Plug 'kshenoy/vim-signature'
 
 " }}}
 
 " FileSystem ============================================================= {{{
 
 " Fuzzy search files/buffers
-NeoBundle 'kien/ctrlp.vim'
+Plug 'kien/ctrlp.vim'
 
 " Another fuzzy search tool with different scope and plugins
-NeoBundle 'Shougo/unite.vim'
+Plug 'Shougo/unite.vim'
 
 " colorscheme plugin
-NeoBundle 'ujihisa/unite-colorscheme'
+Plug 'ujihisa/unite-colorscheme'
 
 " Browse the filesystem easily
-NeoBundle 'scrooloose/nerdtree'
-
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 
 " ag // silver_searcher
-NeoBundle 'rking/ag.vim'
+Plug 'rking/ag.vim'
 
 " }}}
 
 " Development ============================================================ {{{
 
 " Snippets
-NeoBundle 'SirVer/ultisnips'
-NeoBundle 'honza/vim-snippets'
+Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 
 " Formatting tools
-NeoBundle 'Chiel92/vim-autoformat'
+Plug 'Chiel92/vim-autoformat'
 
 " Flake8 for python
-NeoBundle 'nvie/vim-flake8'
+Plug 'nvie/vim-flake8'
 
 " Syntax and code quality check for various languages
-NeoBundle 'scrooloose/syntastic'
+Plug 'scrooloose/syntastic'
 
 " Commenting blocks, etc
-NeoBundle 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdcommenter'
 
 " Show git diff inline
-"NeoBundle 'airblade/vim-gitgutter'
+"Plug 'airblade/vim-gitgutter'
 
 " Close brackets automatically
-NeoBundle 'Raimondi/delimitMate'
+Plug 'Raimondi/delimitMate'
 
 " Tree like overview of undo option
-NeoBundle 'sjl/gundo.vim'
+Plug 'sjl/gundo.vim'
 
 " Text expander tool for html/xml
-NeoBundle 'mattn/emmet-vim'
+Plug 'mattn/emmet-vim', { 'for': [ 'html', 'xml', 'javascript' ] }
 
 " YouCompleteMe
-NeoBundle 'Valloric/YouCompleteMe', {'build': {'mac': './install.sh --clang-completer'}}
+Plug 'Valloric/YouCompleteMe', { 'for':  [ 'cpp', 'c', 'python' ], 'do': './install.py --clang-completer' }
+autocmd! User YouCompleteMe if !has('vim_starting') | call youcompleteme#Enable() | endif
 
 " Switch between text patterns
-NeoBundle 'AndrewRadev/switch.vim'
+Plug 'AndrewRadev/switch.vim'
 
 " Display tags
-NeoBundle 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar'
 
 " Auto-resize windows by the golden ratio
-NeoBundle 'zhaocai/GoldenView.Vim'
+Plug 'zhaocai/GoldenView.Vim'
 
 " Select makeprg automatically
-NeoBundle 'johnsyweb/vim-makeshift'
+Plug 'johnsyweb/vim-makeshift'
 
 " Tabularize text by separator
-NeoBundle 'godlygeek/tabular'
+Plug 'godlygeek/tabular'
 
 " Various tools for go
-NeoBundle 'fatih/vim-go'
+Plug 'fatih/vim-go', { 'for': 'go' }
 
 " Rust
-NeoBundle 'rust-lang/rust.vim'
+Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 
 " Swift
-NeoBundle 'toyamarinyon/vim-swift'
+Plug 'toyamarinyon/vim-swift', { 'for': 'swift' }
 
 " Gradle support
-NeoBundle 'tfnico/vim-gradle'
+Plug 'tfnico/vim-gradle'
 
 " Scala support
-NeoBundle 'derekwyatt/vim-scala'
+Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
 
 " }}}
 
 " Color Schemes ========================================================== {{{
 
+" a bundle of many useful color schemes
+Plug 'flazz/vim-colorschemes'
+
 " essential color schemes // the order is important
 " to override the old stuff in flazz/vim-colorschemes
-NeoBundle 'wesgibbs/vim-irblack'
-NeoBundle 'chriskempson/vim-tomorrow-theme'
-NeoBundle 'noahfrederick/vim-hemisu'
-NeoBundle 'romainl/Apprentice'
-NeoBundle 'altercation/vim-colors-solarized'
-NeoBundle 'jonathanfilip/vim-lucius'
-
-" a bundle of many useful color schemes
-NeoBundle 'flazz/vim-colorschemes'
-NeoBundle 'morhetz/gruvbox'
-NeoBundle 'trusktr/seti.vim'
+Plug 'wesgibbs/vim-irblack'
+Plug 'chriskempson/vim-tomorrow-theme'
+Plug 'noahfrederick/vim-hemisu'
+Plug 'romainl/Apprentice'
+Plug 'altercation/vim-colors-solarized'
+Plug 'jonathanfilip/vim-lucius'
+Plug 'morhetz/gruvbox'
+Plug 'trusktr/seti.vim'
+Plug 'notpratheek/vim-luna'
+Plug 'zandrmartin/vim-distill'
 
 " }}}
 
 " Syntax ================================================================= {{{
 
 " Enhanced python highlight
-NeoBundle 'mitsuhiko/vim-python-combined'
+Plug 'mitsuhiko/vim-python-combined', { 'for': 'python' }
 
 " ObjC enhancements
-NeoBundle 'b4winckler/vim-objc'
-NeoBundle 'msanders/cocoa.vim'
+Plug 'b4winckler/vim-objc'
+Plug 'msanders/cocoa.vim'
 
 " syntax hl for markdown
-NeoBundle 'plasticboy/vim-markdown'
+Plug 'plasticboy/vim-markdown'
 
 " enhanced c++14 highlight
-NeoBundle 'octol/vim-cpp-enhanced-highlight'
+Plug 'octol/vim-cpp-enhanced-highlight', { 'for': 'cpp' }
 
 " }}}
 
-call neobundle#end()
+call plug#end()
 
 " re-enable filetype
 filetype on
 filetype indent on
 filetype plugin indent on
-NeoBundleCheck
 
 " }}}
 
@@ -1034,7 +1017,7 @@ inoremap <c-x><c-k> <c-x><c-k>
 " Color scheme =========================================================== {{{
 
 if has('gui_running')
-    colo busybee
+    colo seti
 else
     colo distinguished
 endif
