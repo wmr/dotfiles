@@ -13,7 +13,7 @@ fi
 alias lpowerline="source ${POWERLINE_ZSH_INIT}"
 
 # start powerline daemon
-[[ -e ${POWERLINE_DAEMON} ]] && ${POWERLINE_DAEMON} --silent
+[[ -e ${POWERLINE_DAEMON} ]] && ${POWERLINE_DAEMON} --quiet
 # set powerline prompt
 [[ -e ${POWERLINE_ZSH_INIT} ]] && lpowerline
 # export powerline daemon to be used in .tmux.conf, etc
