@@ -52,6 +52,9 @@ alias llt='ll -tr'       # Lists sorted by date, most recent last.
 alias llc='llt -c'       # Lists sorted by date, most recent last, shows change time.
 alias llu='llt -u'       # Lists sorted by date, most recent last, shows access time.
 
+alias py='python'
+alias py3='python3'
+
 if (( $+commands[tmux] )); then
   alias tmux-ls="tmux list-sessions"
 
