@@ -36,11 +36,12 @@ include Colors
 BREW_PATH = '/usr/local/bin/brew'
 ZPREZTO_PATH = '~/.zprezto'
 SHELLS_CONFIG_PATH = '/etc/shells'
-NEOBUNDLE_PATH = '~/.vim/bundle/neobundle.vim/'
+VIMPLUG_PATH = '~/.vim/autoload/plug.vim'
 
 CORE_TOOLSET = [
   "macvim --override-system-vim",
   :bash, :wget, :curl, :coreutils,
+  "zsh-completions",
   # Scripting
   :python, :python3, :ruby,
   # Development tools
@@ -82,7 +83,8 @@ task :ensure_brew do
     if not File.exist?(BREW_PATH)
         puts red("✗ Cannot find a brew installation")
         puts yellow "+++ brew..."
-        sh 'ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"'
+        sh 'ruby -e "$(curl -fsSL '\
+            'https://raw.githubusercontent.com/Homebrew/install/master/install)"'
     else
         puts green "✔︎ 'brew' is installed."
     end
@@ -94,27 +96,29 @@ task :ensure_zprezto do
     if not File.exists? File.expand_path ZPREZTO_PATH
         puts red("✗ Cannot find .zprezto dir")
         puts yellow "+++ zprezto"
-        sh 'git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto" '
+        sh 'git clone --recursive https://github.com/sorin-ionescu/prezto.git '\
+            '"${ZDOTDIR:-$HOME}/.zprezto" '
     else
         puts green "✔︎ 'zprezto' is installed."
     end
 end
 
-desc "Ensure NeoBundle for vim is installed"
-task :ensure_neobundle do
-    print yellow "??? Checking for 'NeoBundle' installation... "
-    if not File.exists? File.expand_path NEOBUNDLE_PATH
-        print yellow "+++ NeoBundle"
-        sh "curl https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh | sh"
+desc "Ensure vim-plug for vim is installed"
+task :ensure_vimplug do
+    print yellow "??? Checking for 'vim-plug' installation... "
+    if not File.exists? File.expand_path VIMPLUG_PATH
+        print yellow "+++ vim-plug"
+        sh "curl -fLo ~/.vim/autoload/plug.vim --create-dirs "\
+            "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
     else
-      puts green "✔︎ 'NeoBundle' is installed."
+      puts green "✔︎ 'vim-plug' is installed."
     end
 end
 
-desc "Restore NeoBundle plugins for vim"
-task :build_vim_plugins => [:ensure_neobundle] do
+desc "Restore vim-plug plugins for vim"
+task :build_vim_plugins => [:ensure_vimplug] do
     puts yellow "+++ vim bundles"
-    sh 'vim +NeoBundleInstall +qall'
+    sh 'vim +PlugUpdate +qall'
 end
 
 desc "Update Brew, tap dupes"
@@ -158,7 +162,9 @@ desc "Install both Python2 and 3 modules"
 task :py_modules => [:py2_modules, :py3_modules]
 
 desc "restore the environment for dotfiles"
-task :restore => [:ensure_zprezto, :update_brew, :install_core, :py_modules, :build_vim_plugins] do
+task :restore => [:ensure_zprezto, :update_brew, :install_core,
+      :py_modules, :build_vim_plugins] do
+        
     sh "brew update"
 end
 
