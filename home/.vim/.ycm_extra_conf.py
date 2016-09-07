@@ -40,8 +40,8 @@ flags = [
     '-Werror',
     '-Wno-long-long',
     '-Wno-variadic-macros',
-    '-fexceptions',
     '-DNDEBUG',
+    '-fobjc-arc',
     '-framework Cocoa',
     '-std=c++1y',
     # ...and the same thing goes for the magic -x option which specifies the

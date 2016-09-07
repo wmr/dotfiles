@@ -11,7 +11,14 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
+# setup default uncrustify config
 export UNCRUSTIFY_CONFIG="${HOME}/.vim/uc.cfg"
+
+# enable auto complete in python interactive shell by default
+export PYTHONSTARTUP="${HOME}/.pyrc"
+
+# enable iTerm2 shell integration
+#source "${HOME}/.custom/iterm2_shell_integration.zsh"
 
 # enable homeshick
 #source "${HOME}/.custom/homeshick.zsh"
@@ -25,8 +32,11 @@ source "${HOME}/.custom/aliases.zsh"
 # enable zaw
 source "${HOME}/.custom/zaw/zaw.zsh"
 
+# enable fzf
+source "${HOME}/.custom/fzf/fzf.zsh"
+
+# homebrew api github token
+source "${HOME}/.private/homebrew-apitoken.zsh"
+
 # automatically remove duplicates
 typeset -U path cdpath fpath manpath
-
-# enable auto complete in python interactive shell by default
-export PYTHONSTARTUP="${HOME}/.pyrc"

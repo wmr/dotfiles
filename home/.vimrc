@@ -71,6 +71,9 @@ Plug 'vim-scripts/YankRing.vim'
 " display marks
 Plug 'kshenoy/vim-signature'
 
+" dev icons
+"Plug 'ryanoasis/vim-devicons'
+
 " }}}
 
 " FileSystem ============================================================= {{{
@@ -149,6 +152,9 @@ Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 " Swift
 Plug 'toyamarinyon/vim-swift', { 'for': 'swift' }
 
+" Javascript
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+
 " Gradle support
 Plug 'tfnico/vim-gradle'
 
@@ -174,6 +180,7 @@ Plug 'morhetz/gruvbox'
 Plug 'trusktr/seti.vim'
 Plug 'notpratheek/vim-luna'
 Plug 'zandrmartin/vim-distill'
+Plug 'ninja/sky'
 
 " }}}
 
