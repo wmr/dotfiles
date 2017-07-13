@@ -25,6 +25,7 @@
     autocrlf = input
     safecrlf = true
 	quotepath = false
+	editor = atom --wait
 [color]
     status = auto
     branch = auto
