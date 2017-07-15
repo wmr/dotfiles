@@ -1,3 +1,10 @@
+#
+# .zprofile
+#
+# (c) wmr
+#
+
+
 source "${HOME}/.profile"
 
 #
@@ -7,6 +14,7 @@ source "${HOME}/.profile"
 if [[ "$OSTYPE" == darwin* ]]; then
   export BROWSER='open'
 fi
+
 
 #
 # Editors
@@ -20,9 +28,11 @@ export PAGER='less'
 # Language
 #
 
+
 if [[ -z "$LANG" ]]; then
   export LANG='en_US.UTF-8'
 fi
+
 
 #
 # Paths
@@ -42,6 +52,7 @@ path=(
   $path
 )
 
+
 #
 # Less
 #
@@ -55,6 +66,7 @@ export LESS='-F -g -i -M -R -S -w -X -z-4'
 if (( $+commands[lesspipe.sh] )); then
   export LESSOPEN='| /usr/bin/env lesspipe.sh %s 2>&-'
 fi
+
 
 #
 # Temporary Files
