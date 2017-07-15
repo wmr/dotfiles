@@ -4,26 +4,24 @@
 # (c) wmr
 #
 
-# Check for zplug; install if missing
-[[ ! -d ~/.zplug ]] && git clone https://github.com/b4b4r07/zplug ~/.zplug
 
-source ~/.zplug/init.zsh
+#
+# Bundles & custom settings
+# This is much faster than zplug, albeit not very elegant
+#
 
-export CASE_SENSITIVE=true
+source <(antibody init)
 
-zplug "mafredri/zsh-async", from:github, defer:0
-zplug "modules/completion", from:prezto
-zplug "modules/history", from:prezto
-zplug "modules/spectrum", from:prezto
-zplug "modules/homebrew", from:prezto
-zplug "plugins/git", from:oh-my-zsh
-zplug "zsh-users/zsh-syntax-highlighting", from:github, defer:2
-zplug "zsh-users/zsh-history-substring-search", from:github, defer:3
+# bundles before compinit
+antibody bundle mafredri/zsh-async
 
-# theme
-zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
+for script in ${HOME}/.custom/*.zsh(.); do source $script; done
 
-# locals
-zplug "~/.custom", from:local
+run_compinit # sourced from ~/.custom/completion.zsh
 
-zplug load
+# bundles after compinit
+antibody bundle zsh-users/zsh-syntax-highlighting
+antibody bundle zsh-users/zsh-history-substring-search
+
+# theming
+antibody bundle sindresorhus/pure

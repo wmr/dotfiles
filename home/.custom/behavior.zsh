@@ -30,7 +30,7 @@ setopt combining_chars
 
 # Treat single word simple commands without redirection as candidates
 # for resumption of an existing job.
-setupt auto_resume
+setopt auto_resume
 
 # List jobs in the long format by default
 setopt long_list_jobs
