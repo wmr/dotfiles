@@ -1,0 +1,1 @@
+/Users/wmr/.homesick/repos/dotfiles/home/.custom/behavior.zsh
