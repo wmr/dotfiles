@@ -9,12 +9,14 @@
 
 source ~/.zplug/init.zsh
 
+export CASE_SENSITIVE=true
+
 zplug "mafredri/zsh-async", from:github, defer:0
+zplug "modules/completion", from:prezto
 zplug "modules/history", from:prezto
 zplug "modules/spectrum", from:prezto
 zplug "modules/homebrew", from:prezto
 zplug "plugins/git", from:oh-my-zsh
-zplug "zsh-users/zsh-completions", from:github, defer:2
 zplug "zsh-users/zsh-syntax-highlighting", from:github, defer:2
 zplug "zsh-users/zsh-history-substring-search", from:github, defer:3
 
