@@ -1,7 +1,7 @@
 #
 # Key bindings
 #
-# (c) wmr
+# (c) 2017 wmr <wmr101@gmail.com>
 #
 
 # vi mode
