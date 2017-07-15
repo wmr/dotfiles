@@ -1,6 +1,9 @@
 #
-# (c) 2014 // wmr
+# .zlogin
 #
+# (c) 2017 wmr <wmr101@gmail.com>
+#
+
 
 # commands at login post-zshrc.
 
@@ -12,9 +15,11 @@
     zcompile "$zcompdump"
   fi
 
-  for env_var in PATH MANPATH; do
-      launchctl setenv "$env_var" "${(P)env_var}"
-  done
+  if (( $+commands[launchctl] )); then
+    for env_var in PATH MANPATH; do
+        launchctl setenv "$env_var" "${(P)env_var}"
+    done
+  fi
 } &!
 
 # print figlet and a random, offending cookie.
