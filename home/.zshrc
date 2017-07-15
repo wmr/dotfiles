@@ -4,7 +4,7 @@
 source ~/.zplug/init.zsh
 
 zplug "mafredri/zsh-async", from:github, defer:0
-zplug "lib/completion", from:oh-my-zsh
+# zplug "lib/completion", from:oh-my-zsh
 zplug "lib/history", from:oh-my-zsh
 zplug "lib/directories", from:oh-my-zsh
 zplug "plugins/git", from:oh-my-zsh
