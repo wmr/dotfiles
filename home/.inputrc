@@ -1,5 +1,8 @@
 # prefer vi edit mode
-set editing-mode=vi
+#set editing-mode=vi
+
+"\e[1~": beginning-of-line        # C-a
+"\e[4~": end-of-line              # C-e
 
 $if mode=emacs
     "\e[1~": beginning-of-line        # C-a

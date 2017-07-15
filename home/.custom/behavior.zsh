@@ -47,3 +47,6 @@ setopt notify
 # Do NOT print a warning message if a mail file has been accessed
 # since the shell last checked.
 unsetopt mail_warning
+
+# Set key sequence wait time to .1 seconds
+export KEYTIMEOUT=1

@@ -25,3 +25,5 @@ antibody bundle zsh-users/zsh-history-substring-search
 
 # theming
 antibody bundle sindresorhus/pure
+
+bindkey -v

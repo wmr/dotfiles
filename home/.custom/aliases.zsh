@@ -1,11 +1,12 @@
 #
 # Alias setup
 #
-# (c) wmr
+# (c) 2014 wmr <wmr101@gmail.com>
 #
 
 
 # Generic
+alias _=sudo
 alias plz=sudo
 alias zshconf="${EDITOR} ~/.zshrc"
 alias ltrah='ls -ltrah'
@@ -48,7 +49,13 @@ alias po='popd'
 alias pu='pushd'
 alias type='type -a'
 
-alias ls='ls -G'         # enable colored output in ls
+# enable colored output in ls
+if [[ ${OSTYPE} == darwin* ]]; then
+  alias ls='ls -G'
+else
+  alias ls='ls --color'
+fi
+
 alias l='ls -1A'         # Lists in one column, hidden files.
 alias ll='ls -lh'        # Lists human readable sizes.
 alias lr='ll -R'         # Lists human readable sizes, recursively.
@@ -61,6 +68,22 @@ alias llu='llt -u'       # Lists sorted by date, most recent last, shows access 
 
 alias py='python'
 alias py3='python3'
+
+# cd to current directory open in Finder
+if [[ ${OSTYPE} == darwin* ]]; then
+cdf () {
+  finderPath=`osascript -e '
+  tell application "Finder"
+    try
+      set currentFolder to (folder of the front window as alias)
+    on error
+      set currentFolder to (path to desktop folder as alias)
+    end try
+    POSIX path of currentFolder
+  end tell'`;
+  cd "$finderPath"
+}
+fi
 
 if (( $+commands[brew] )); then
 
