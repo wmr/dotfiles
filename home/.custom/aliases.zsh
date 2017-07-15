@@ -1,9 +1,16 @@
-# zsh aliases
+#
+# Alias setup
+#
+# (c) wmr
+#
 
+
+# Generic
 alias plz=sudo
 alias zshconf="${EDITOR} ~/.zshrc"
 alias ltrah='ls -ltrah'
 
+# Disable correction
 alias ack='nocorrect ack'
 alias ag='nocorrect ag'
 alias cd='nocorrect cd'
@@ -103,31 +110,9 @@ function find-exec {
   find . -type f -iname "*${1:-}*" -exec "${2:-file}" '{}' \;
 }
 
-# pretty print json
-function ppjson {
-  local JSON_TOOL="python2.7 -m json.tool"
-  local PYGMENT_TOOL="pygmentize -l javascript"
-  local FORMAT_CMD="${JSON_TOOL} | ${PYGMENT_TOOL}"
-
-  if [[ $# -gt 0 ]]; then
-    for arg in $@; do
-      [[ ! -f $arg ]] && echo $* | eval ${FORMAT_CMD} && return
-      cat $arg | eval $FORMAT_CMD
-    done
-  else
-    eval "${JSON_TOOL} < /dev/stdin | ${PYGMENT_TOOL}"
-  fi
-}
-
 # Serves a directory via HTTP.
 alias http-serve='python -m SimpleHTTPServer'
 
-# fasd shorthands
-alias f='fasd -f'    # pick file
-alias d='fasd -d'    # pick directory
-alias z='fasd_cd -d' # cd to dir
-alias v='f -e vim'   # quickly open files with vim
-alias j=z            # mimic autojump
 
 # accept extended regex by default
 alias sed='sed -E'
