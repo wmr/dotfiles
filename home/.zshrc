@@ -16,7 +16,8 @@ source <(antibody init)
 antibody bundle mafredri/zsh-async
 antibody bundle Tarrasch/zsh-autoenv
 
-for script in ${HOME}/.custom/*.zsh(.); do source $script; done
+# local repo
+antibody bundle "${HOME}/.custom"
 
 run_compinit # sourced from ~/.custom/completion.zsh
 
