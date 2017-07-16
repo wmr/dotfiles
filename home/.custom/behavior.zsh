@@ -44,6 +44,10 @@ setopt notify
 # Input/Output
 #
 
+# Disable auto correction
+unsetopt correctall
+unsetopt correct
+
 # Do NOT print a warning message if a mail file has been accessed
 # since the shell last checked.
 unsetopt mail_warning
