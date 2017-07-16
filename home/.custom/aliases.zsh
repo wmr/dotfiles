@@ -69,6 +69,8 @@ alias llu='llt -u'       # Lists sorted by date, most recent last, shows access 
 alias py='python'
 alias py3='python3'
 
+alias g=git
+
 # cd to current directory open in Finder
 if [[ ${OSTYPE} == darwin* ]]; then
 cdf () {
