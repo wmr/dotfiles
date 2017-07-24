@@ -24,7 +24,7 @@ alias po='popd'
 alias pu='pushd'
 alias type='type -a'
 alias plz=sudo
-alias zshconf="${EDITOR} ~/.zshrc"
+alias zshconf="${EDITOR} ${HOME}/.zshrc"
 
 
 #
@@ -127,7 +127,6 @@ alias cd='nocorrect cd'
 alias cp='nocorrect cp'
 alias gcc='nocorrect gcc'
 alias gist='nocorrect gist'
-alias grep='nocorrect grep'
 alias heroku='nocorrect heroku'
 alias ln='nocorrect ln'
 alias man='nocorrect man'
