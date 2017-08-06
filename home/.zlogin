@@ -24,7 +24,7 @@
 
 # Print figlet and a random, offending cookie.
 # The non-offending ones are boring anyway
-function () {
+() {
   if (( $+commands[figlet] ))
   then
     local figlet_font="smisome1"
@@ -34,8 +34,8 @@ function () {
 
   if (( $+commands[fortune] ))
   then
-    local quote=$(fortune -o)
-    local length=${#${quote}}
+    local quote="$(fortune -o)"
+    local length="${#${quote}}"
     if [[ ${length} -le 200 ]] && (( $+commands[cowsay] ))
     then
       cowsay ${quote} && print
