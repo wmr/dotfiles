@@ -27,18 +27,18 @@
 () {
   if (( $+commands[figlet] ))
   then
-    local figlet_font="smisome1"
+    local figlet_font=${LOGIN_FIGLET_FONT:-"smisome1"}
     (( $+commands[lolcat] )) && local pipe_lolcat="| lolcat"
     eval "figlet -f ${figlet_font} ${$(hostname):r:r} ${pipe_lolcat} && print"
   fi
 
   if (( $+commands[fortune] ))
   then
-    local quote="$(fortune -o)"
+    local quote="$(fortune ${LOGIN_FORTUNE_PARAMS})"
     local length="${#${quote}}"
-    if [[ ${length} -le 200 ]] && (( $+commands[cowsay] ))
+    if [[ ${length} -le ${LOGIN_COWSAY_MAX_LEN:-200} ]] && (( $+commands[cowsay] ))
     then
-      cowsay ${quote} && print
+      cowsay ${quote} ${LOGIN_COWSAY_PARAMS} && print
     else
       echo ${quote} && print
     fi
