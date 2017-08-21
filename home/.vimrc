@@ -338,7 +338,7 @@ syn on
 set foldenable
 
 " method to find folds
-set foldmethod=syntax
+set foldmethod=marker
 
 " one level fold
 set foldlevel=0
@@ -366,7 +366,7 @@ if has('gui_running')
   set guioptions-=r
   set guioptions-=R
 
-  set guifont=Monaco\ for\ Powerline:h12
+  set guifont=Monaco\ for\ Powerline:h14
   set columns=105
 
   " MacVim specific settings

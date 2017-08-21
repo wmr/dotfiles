@@ -31,10 +31,13 @@
 # Atom Flight Manual:
 # http://flight-manual.atom.io/using-atom/sections/basic-customization/#_cson
 
+# open file under cursor
 'atom-text-editor.vim-mode-plus.normal-mode':
   'g f':      'open-this:here'
   'ctrl-w f': 'open-this:split-down'
   'ctrl-w F': 'open-this:split-right'
+  'K':        'dash:shortcut'
 
+# clipboard+
 '.platform-darwin atom-text-editor.vim-mode-plus:not(.insert-mode)':
   'cmd-V': 'clipboard-plus:toggle'
