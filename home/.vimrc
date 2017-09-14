@@ -722,7 +722,7 @@ function! s:AddPythonPathsToPath()
   " load paths only once
   if !exists('g:add_python_paths_complete')
 
-python << END_PYTHON
+python3 << END_PYTHON
 import os, sys, vim
 for p in sys.path:
   if os.path.isdir(p):
@@ -794,7 +794,7 @@ augroup fileTypesGroup
         \ call s:SetupAutocmdForFileCleanupOnSave()
 
   " set the makeprg based on the shebang for scripts
-  autocmd FileType python setlocal mp=python2.7\ % | call s:AddPythonPathsToPath()
+  autocmd FileType python setlocal mp=python3\ % | call s:AddPythonPathsToPath()
   "autocmd FileType python,ruby,perl,zsh call s:SetMakePrgBasedOnShebang()
   "autocmd BufWritePost *.py,*.rb,*.pl,*.zsh call s:SetMakePrgBasedOnShebang()
 
@@ -806,7 +806,7 @@ augroup fileTypesGroup
   " set custom tabsize for vim/zsh/yaml/*html* files
   autocmd FileType vim,zsh,yaml,html setlocal ts=2 sw=2 sts=2 expandtab
 
-  " add PYTHONPATH elements to path, use python2.7 as makeprogram by default
+  " add PYTHONPATH elements to path, use python3 as makeprogram by default
   autocmd FileType vim setlocal foldmethod=marker
   autocmd FileType zsh colo badwolf
 
