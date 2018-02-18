@@ -181,6 +181,9 @@ Plug 'trusktr/seti.vim'
 Plug 'notpratheek/vim-luna'
 Plug 'zandrmartin/vim-distill'
 Plug 'ninja/sky'
+Plug 'drewtempelmeyer/palenight.vim'
+Plug 'arcticicestudio/nord-vim'
+Plug 'ayu-theme/ayu-vim'
 
 " }}}
 
@@ -290,10 +293,10 @@ endif
 " Indent ================================================================= {{{
 
 " set tab stop
-set ts=4
+set ts=2
 
 " set shift width
-set sw=4
+set sw=2
 
 " enable auto indentation
 set autoindent
@@ -366,7 +369,7 @@ if has('gui_running')
   set guioptions-=r
   set guioptions-=R
 
-  set guifont=Monaco\ for\ Powerline:h14
+  set guifont=Operator\ Mono\ Book:h15
   set columns=105
 
   " MacVim specific settings
@@ -408,15 +411,15 @@ let g:EasyMotion_use_smartsign_us=1
 " jump to first match w/ enter or space
 let g:EasyMotion_enter_jump_first=1
 " highlight landing for a limited time
-"let g:EasyMotion_landing_highlight=1
+let g:EasyMotion_landing_highlight=1
 " }}}
 
 " vim-airline ============================================================ {{{
 
 " airline theme + powerline fonts
-"let g:airline_theme='luna'
+let g:airline_theme='dark'
 if has("gui_running")
-  let g:airline_powerline_fonts=1
+  let g:airline_powerline_fonts=0
 endif
 
 " }}}
@@ -1024,7 +1027,7 @@ inoremap <c-x><c-k> <c-x><c-k>
 " Color scheme =========================================================== {{{
 
 if has('gui_running')
-    colo seti
+    colo palenight
 else
     colo distinguished
 endif
