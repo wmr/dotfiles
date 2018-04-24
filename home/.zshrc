@@ -16,14 +16,17 @@ source <(antibody init)
 antibody bundle mafredri/zsh-async
 antibody bundle Tarrasch/zsh-autoenv
 
+
 # local repo
-antibody bundle "${HOME}/.custom"
+antibody bundle "${HOME}/.zsh/completion"
 
 run_compinit # sourced from ~/.custom/completion.zsh
 
 # bundles after compinit
 antibody bundle zsh-users/zsh-syntax-highlighting
 antibody bundle zsh-users/zsh-history-substring-search
+
+antibody bundle "${HOME}/.zsh/custom"
 
 # theming
 antibody bundle sindresorhus/pure

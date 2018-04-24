@@ -34,12 +34,11 @@ include Colors
 #
 
 BREW_PATH = '/usr/local/bin/brew'
-ZPREZTO_PATH = '~/.zprezto'
 SHELLS_CONFIG_PATH = '/etc/shells'
 VIMPLUG_PATH = '~/.vim/autoload/plug.vim'
 
 CORE_TOOLSET = [
-  "macvim --override-system-vim",
+  "macvim --with-override-system-vim",
   :bash, :wget, :curl, :coreutils,
   "zsh-completions",
   # Scripting
@@ -64,7 +63,6 @@ PYTHON_UNIVERSAL = [
   :keyring, :transmissionrpc, :mechanize,
   # Command line tools
   :psutil, :pygments,
-  "powerline-status",
 ]
 
 PYTHON2_ONLY = [
@@ -162,9 +160,9 @@ desc "Install both Python2 and 3 modules"
 task :py_modules => [:py2_modules, :py3_modules]
 
 desc "restore the environment for dotfiles"
-task :restore => [:ensure_zprezto, :update_brew, :install_core,
+task :restore => [:update_brew, :install_core,
       :py_modules, :build_vim_plugins] do
-        
+
     sh "brew update"
 end
 

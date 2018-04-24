@@ -41,3 +41,7 @@
 # clipboard+
 '.platform-darwin atom-text-editor.vim-mode-plus:not(.insert-mode)':
   'cmd-V': 'clipboard-plus:toggle'
+
+# fix emmet hijacking tab
+'atom-text-editor:not([mini])':
+  'ctrl-e': 'emmet:expand-abbreviation-with-tab'

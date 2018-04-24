@@ -9,9 +9,6 @@
 # Quoting & special chars
 #
 
-# Functions to make it easier to type URLs as command line arguments.
-autoload -Uz url-quote-magic
-zle -N self-insert url-quote-magic
 
 # Allow the character sequence ‘''’ to signify a single quote within
 # singly quoted strings. Note this does not apply in quoted strings
