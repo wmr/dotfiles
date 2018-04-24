@@ -1,0 +1,106 @@
+#!/usr/bin/env python2.7
+# encoding: utf-8
+
+#  Satanifier™
+#  satanify
+#
+#  Created by wmr on 2014-06-22.
+#  Copyright 2014 wmr. All Rights Reserved.
+#
+
+'''
+Utility to produce satanic text from norm-core text
+(in other words to satanify™ it).
+'''
+
+from __future__ import print_function, absolute_import
+
+
+class Satanifier(object):
+    '''Pure satanification'''
+
+    MAP_OF_SATANIC_WAYS = {
+        'A': 'Δ',  # Unicode: U+0394, UTF-8: CE 94
+        'B': 'β',  # Unicode: U+03B2, UTF-8: CE B2
+        'E': 'Ξ',  # Unicode: U+039E, UTF-8: CE 9E
+        'I': '1',
+        'O': 'Ø',  # Unicode: U+00D8, UTF-8: C3 98,
+        'S': 'ϟ',  # Unicode: U+03DF, UTF-8: CF 9F
+        'R': 'Я',  # Unicode: U+042F, UTF-8: D0 AF
+        'T': '†',  # Unicode: U+2020, UTF-8: E2 80 A0
+        'U': 'V',
+
+        ',': ' //',
+        '-': '-=-',
+    }
+
+    def __init__(self):
+        super(Satanifier, self).__init__()
+
+    @classmethod
+    def satanify_a_bit(cls, ch):
+        '''Satanifies the given character
+
+        :param cls: class object
+        :param ch: the character to satanify
+        :returns: the satanified version of the character
+        '''
+        MAP_OF_SATANIC_WAYS = cls.MAP_OF_SATANIC_WAYS
+        upper_ch = ch.upper()
+
+        return MAP_OF_SATANIC_WAYS[upper_ch] \
+            if upper_ch in MAP_OF_SATANIC_WAYS \
+            else upper_ch
+
+    @classmethod
+    def satanic_yield(cls, iterable):
+        '''Yields satanic elements from the iterable
+
+        :param iterable: the iterable to satinify
+        :returns: a satanic character in each step
+        '''
+        satanify_a_bit = cls.satanify_a_bit
+
+        for elem in iterable:
+            yield satanify_a_bit(elem)
+
+    @classmethod
+    def satanic_map(cls, iterable):
+        return map(cls.satanify_a_bit, iterable)
+
+
+def parse_args():
+    '''Parse command line arguments
+
+    :returns: the parsed arguments object
+    '''
+    from argparse import ArgumentParser, FileType
+    from sys import stdin, stdout
+
+    parser = ArgumentParser(description='Textual satanifier™')
+    parser.add_argument('-t', '--text', nargs='+',
+                        help='satanifies the given text (ignores INFILE)')
+    parser.add_argument('infile', metavar='INFILE', nargs='?',
+                        type=FileType('r'), default=stdin,
+                        help='use the given file as input (default: stdin)')
+    parser.add_argument('-o', '--outfile', nargs='?',
+                        type=FileType('w'), default=stdout,
+                        help='''directs the demonic pulses of satanified text
+                                to the given file (default: stdout)''')
+
+    return parser.parse_args()
+
+
+def main():
+    '''Entry point'''
+
+    args = parse_args()
+    needs_satification = \
+        [' '.join(args.text)] if args.text else args.infile
+
+    for line in needs_satification:
+        print (''.join(Satanifier.satanic_map(line)),
+               file=args.outfile)
+
+if __name__ == '__main__':
+    main()
