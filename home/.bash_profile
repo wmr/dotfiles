@@ -13,3 +13,4 @@ fi
 
 export PS1="\[\e[0;35m\]\h:\[\e[0m\]\W \[\e[1;30m\]\u$\[\e[0m\] "
 export HISTCONTROL=ignoredups
+. "$HOME/.cargo/env"

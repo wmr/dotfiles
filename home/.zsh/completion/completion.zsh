@@ -27,6 +27,8 @@ setopt EXTENDED_GLOB       # Needed for file modification glob modifiers with co
 unsetopt MENU_COMPLETE     # Do not autoselect the first completion entry.
 unsetopt FLOW_CONTROL      # Disable start/stop characters in shell editor.
 
+fpath=(~/.zsh/completion $fpath)
+
 run_compinit() {
   autoload -Uz compinit
   _comp_files=(${ZDOTDIR:-$HOME}/.zcompdump(Nm-20))

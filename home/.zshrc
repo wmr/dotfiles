@@ -16,7 +16,6 @@ source <(antibody init)
 antibody bundle mafredri/zsh-async
 antibody bundle Tarrasch/zsh-autoenv
 
-
 # local repo
 antibody bundle "${HOME}/.zsh/completion"
 

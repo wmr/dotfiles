@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 # encoding: utf-8
 
 #  Satanifier™
@@ -12,8 +12,6 @@
 Utility to produce satanic text from norm-core text
 (in other words to satanify™ it).
 '''
-
-from __future__ import print_function, absolute_import
 
 
 class Satanifier(object):

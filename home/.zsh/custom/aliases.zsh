@@ -62,6 +62,9 @@ alias py='python'
 alias py3='python3'
 alias pyg='pygmentize'
 alias g=git
+alias kc=kubectl
+alias d=docker
+alias pm=podman
 
 # Serves a directory via HTTP.
 alias http-serve='python -m SimpleHTTPServer'
@@ -89,7 +92,7 @@ fi
 
 alias _='sudo'
 
-alias hs=homesick
+alias hs=homeshick
 
 if (( $+commands[htop] )); then
   alias top=htop
@@ -133,6 +136,7 @@ alias man='nocorrect man'
 alias mkdir='nocorrect mkdir'
 alias mv='nocorrect mv'
 alias rm='nocorrect rm'
+alias mdfind='nocorrect mdfind'
 
 
 #
@@ -149,3 +153,5 @@ alias rake='noglob rake'
 alias rsync='noglob rsync'
 alias scp='noglob scp'
 alias sftp='noglob sftp'
+alias rg='noglob rg'
+alias ag='noglob ag'
