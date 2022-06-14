@@ -5,17 +5,21 @@
     cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
 [difftool "mvimdiff"]
     cmd = /usr/local/bin/mvim -f -d \"$LOCAL\" \"$REMOTE\"
+[difftool "vscode"]
+    cmd = code --wait --diff \"$LOCAL\" \"$REMOTE\"
 [diff]
-    tool = Kaleidoscope
+    tool = vscdoe
 [difftool]
     prompt = false
 [mergetool "Kaleidoscope"]
     cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
     trustExitCode = true
+[mergetool "vscode"]
+    cmd = code --wait \"$MERGED\"
 [mergetool]
     prompt = false
 [merge]
-    tool = Kaleidoscope
+    tool = vscode
 [filter "media"]
     clean = git-media-clean %f
     smudge = git-media-smudge %f
@@ -25,7 +29,7 @@
     autocrlf = input
     safecrlf = true
 	quotepath = false
-	editor = atom --wait
+	editor = code --wait
 [color]
     status = auto
     branch = auto
