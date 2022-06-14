@@ -8,7 +8,7 @@
 [difftool "vscode"]
     cmd = code --wait --diff \"$LOCAL\" \"$REMOTE\"
 [diff]
-    tool = vscdoe
+    tool = vscode
 [difftool]
     prompt = false
 [mergetool "Kaleidoscope"]

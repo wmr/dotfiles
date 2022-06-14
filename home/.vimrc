@@ -369,7 +369,7 @@ if has('gui_running')
   set guioptions-=r
   set guioptions-=R
 
-  set guifont=Operator\ Mono\ Book:h15
+  set guifont=Apercu\ Mono:h15
   set columns=105
 
   " MacVim specific settings

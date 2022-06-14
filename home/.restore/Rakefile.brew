@@ -33,41 +33,23 @@ include Colors
 # Consts
 #
 
-BREW_PATH = '/usr/local/bin/brew'
+BREW_PATH = '/opt/homebrew/bin/brew'
 SHELLS_CONFIG_PATH = '/etc/shells'
 VIMPLUG_PATH = '~/.vim/autoload/plug.vim'
 
 CORE_TOOLSET = [
-  "macvim --with-override-system-vim",
+  :macvim,
   :bash, :wget, :curl, :coreutils,
   "zsh-completions",
   # Scripting
-  :python, :python3, :ruby,
+  "python@3.10",
   # Development tools
-  :git, :ctags,
-  :grep, :ag, :fasd, :cmake, :ninja, :tmux,
-  :fortune, :uncrustify,
+  :rg, :fasd, :cmake, :tmux,
+  :uncrustify,
   # Nice to have
-  :figlet, :fortune, :thefuck,
+  :fortune, :lolcat,
   # OSX specific
-  "reattach-to-user-namespace", "htop-osx",
-]
-
-PYTHON_UNIVERSAL = [
-  # Code quality
-  :pep8, :autopep8,
-  :flake8, :pylint, :nose,
-  # Standard networking stuff
-  :beautifulsoup4,
-  :bottle,  :flask, :jinja2, :jedi,
-  :keyring, :transmissionrpc, :mechanize,
-  # Command line tools
-  :psutil, :pygments,
-]
-
-PYTHON2_ONLY = [
-  :periscope,
-  :BeautifulSoup
+  "htop-osx"
 ]
 
 
@@ -81,24 +63,16 @@ task :ensure_brew do
     if not File.exist?(BREW_PATH)
         puts red("✗ Cannot find a brew installation")
         puts yellow "+++ brew..."
-        sh 'ruby -e "$(curl -fsSL '\
-            'https://raw.githubusercontent.com/Homebrew/install/master/install)"'
+        sh '/bin/bash -c "$(curl -fsSL '\
+            'https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
     else
         puts green "✔︎ 'brew' is installed."
     end
 end
 
-desc "Ensure zprezto is installed"
-task :ensure_zprezto do
-    print yellow "??? Checking for 'zprezto' installation... "
-    if not File.exists? File.expand_path ZPREZTO_PATH
-        puts red("✗ Cannot find .zprezto dir")
-        puts yellow "+++ zprezto"
-        sh 'git clone --recursive https://github.com/sorin-ionescu/prezto.git '\
-            '"${ZDOTDIR:-$HOME}/.zprezto" '
-    else
-        puts green "✔︎ 'zprezto' is installed."
-    end
+desc "Update Brew, tap dupes"
+task :update_brew => [:ensure_brew] do
+    sh "brew update"
 end
 
 desc "Ensure vim-plug for vim is installed"
@@ -119,19 +93,13 @@ task :build_vim_plugins => [:ensure_vimplug] do
     sh 'vim +PlugUpdate +qall'
 end
 
-desc "Update Brew, tap dupes"
-task :update_brew => [:ensure_brew] do
-    sh "brew update"
-    sh "brew tap homebrew/dupes"
-end
-
 desc "Install zsh via Brew and set as default shell"
 task :ensure_zsh => [:update_brew] do
     puts yellow "+++ zsh..."
     sh "brew install zsh"
     if `grep $(which zsh) /etc/shells`.strip == ""
         puts yellow "Adding `which zsh` to the list of standard shells"
-        sh 'echo "/usr/local/bin/zsh" | sudo tee -a /etc/shells'
+        sh 'echo "/opt/homebrew/bin/zsh" | sudo tee -a /etc/shells'
         sh 'chsh -s $(which zsh)'
     end
 end
@@ -142,26 +110,9 @@ task :install_core => [:ensure_zsh] do
     sh "brew install " + CORE_TOOLSET.join(" ")
 end
 
-desc "Install Python2 compatible modules"
-task :py2_modules do
-    puts yellow "+++ Python2 modules..."
-    sh "pip2 install --upgrade pip"
-    sh "pip2 install -U " + (PYTHON_UNIVERSAL + PYTHON2_ONLY).join(" ")
-end
-
-desc "Install Python3 compatible modules"
-task :py3_modules do
-  puts yellow "+++ Python3 modules..."
-  sh "pip3 install --upgrade pip"
-  sh "pip3 install -U " + PYTHON_UNIVERSAL.join(" ")
-end
-
-desc "Install both Python2 and 3 modules"
-task :py_modules => [:py2_modules, :py3_modules]
-
 desc "restore the environment for dotfiles"
 task :restore => [:update_brew, :install_core,
-      :py_modules, :build_vim_plugins] do
+     :build_vim_plugins] do
 
     sh "brew update"
 end
