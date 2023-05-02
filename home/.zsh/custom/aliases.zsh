@@ -62,7 +62,7 @@ alias py='python'
 alias py3='python3'
 alias pyg='pygmentize'
 alias g=git
-alias kc=kubectl
+alias k=kubectl
 alias d=docker
 alias pm=podman
 

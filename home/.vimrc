@@ -98,7 +98,7 @@ Plug 'rking/ag.vim'
 " Development ============================================================ {{{
 
 " Snippets
-Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+"Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 
 " Formatting tools
 Plug 'Chiel92/vim-autoformat'
@@ -161,6 +161,8 @@ Plug 'tfnico/vim-gradle'
 " Scala support
 Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
 
+Plug 'ziglang/zig.vim'
+
 " }}}
 
 " Color Schemes ========================================================== {{{
@@ -184,6 +186,8 @@ Plug 'ninja/sky'
 Plug 'drewtempelmeyer/palenight.vim'
 Plug 'arcticicestudio/nord-vim'
 Plug 'ayu-theme/ayu-vim'
+Plug 'catppuccin/vim', { 'as': 'catppuccin' }
+Plug 'ghifarit53/tokyonight-vim'
 
 " }}}
 
@@ -369,7 +373,8 @@ if has('gui_running')
   set guioptions-=r
   set guioptions-=R
 
-  set guifont=Apercu\ Mono:h15
+  set guifont=MonoLisa:h16
+  set macligatures
   set columns=105
 
   " MacVim specific settings
@@ -1027,7 +1032,7 @@ inoremap <c-x><c-k> <c-x><c-k>
 " Color scheme =========================================================== {{{
 
 if has('gui_running')
-    colo palenight
+  colo catppuccin_mocha
 else
     colo distinguished
 endif

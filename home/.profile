@@ -22,3 +22,6 @@ export PATH="/opt/homebrew/sbin:${PATH}"
 source "${HOME}/.sdkman/bin/sdkman-init.sh"
 export HOMEBREW_NO_ENV_HINTS=true
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+
+export GOPATH="${HOME}/src/go"
+export PATH="${GOPATH}/bin:${PATH}"
