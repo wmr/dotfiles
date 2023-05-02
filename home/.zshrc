@@ -27,5 +27,4 @@ antibody bundle zsh-users/zsh-history-substring-search
 
 antibody bundle "${HOME}/.zsh/custom"
 
-# theming
-antibody bundle sindresorhus/pure
+eval $(starship init zsh)
