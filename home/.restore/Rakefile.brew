@@ -4,7 +4,6 @@ require 'rake'
 #
 # Add colors to rake output
 #
-
 module Colors
   def colorize(text, color_code)
     "\033[#{color_code}m#{text}\033[0m"
@@ -41,6 +40,7 @@ CORE_TOOLSET = [
   :macvim,
   :bash, :wget, :curl, :coreutils,
   "zsh-completions",
+  "gradle-completion",
   # Scripting
   "python@3.10",
   # Development tools
