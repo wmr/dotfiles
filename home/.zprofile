@@ -20,8 +20,8 @@ fi
 # Editors
 #
 
-export EDITOR='vim'
-export VISUAL='vim'
+export EDITOR='nvim'
+export VISUAL='nvim'
 export PAGER='less'
 
 #
@@ -90,13 +90,8 @@ fi
 # enable color BSD ls and other tools
 export CLICOLOR=1
 
-# setup default uncrustify config
-export UNCRUSTIFY_CONFIG="${HOME}/.vim/uc.cfg"
-
 # enable auto complete in python interactive shell by default
 export PYTHONSTARTUP="${HOME}/.pyrc"
 
-# brew api token
-HOMEBREW_API_TOKEN_PATH="${HOME}/.private/homebrew-apitoken.zsh"
-[[ -e ${HOMEBREW_API_TOKEN_PATH} ]] && source ${HOMEBREW_API_TOKEN_PATH}
-unset HOMEBREW_API_TOKEN_PATH
+# Added by OrbStack: command-line tools and integration
+source ~/.orbstack/shell/init.zsh 2>/dev/null || :
