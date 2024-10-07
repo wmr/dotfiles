@@ -13,12 +13,18 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
 	{ 'williamboman/mason.nvim', build = ":MasonUpdate" },
-	{ 'neovim/nvim-lspconfig'},
-	{ 'hrsh7th/cmp-nvim-lsp'},
-	{ 'hrsh7th/cmp-buffer'},
-	{ 'hrsh7th/cmp-path'},
-	{ 'hrsh7th/cmp-cmdline'},
-	{ 'hrsh7th/nvim-cmp'},              -- completion engine (lua)
+	{ 'neovim/nvim-lspconfig' },
+	{ 'hrsh7th/cmp-nvim-lsp' },
+	{ 'hrsh7th/cmp-buffer' },
+	{ 'hrsh7th/cmp-path' },
+	{ 'hrsh7th/cmp-cmdline' },
+	{ 'hrsh7th/nvim-cmp' },              -- completion engine (lua)
+	{ 'stevearc/oil.nvim',
+	  ---@module 'oil'
+	  ---@type oil.SetupOpts
+	  opts = {},
+	  dependencies = {{ 'echasnovski/mini.icons', opts = {} }},
+	},
 	{ 'nvim-telescope/telescope.nvim',  -- fuzzy finder
       dependencies = { 'nvim-lua/plenary.nvim' }
   },
@@ -30,10 +36,12 @@ require("lazy").setup({
 	{ "folke/tokyonight.nvim" },
 	{ "folke/which-key.nvim", lazy = true },
 	"nvim-treesitter/nvim-treesitter", -- advanced syntax highlighting
-	"p00f/nvim-ts-rainbow",
+	"HiPhish/rainbow-delimiters.nvim",
 	{ "folke/neoconf.nvim", cmd = "Neoconf" },
 	"folke/neodev.nvim",               -- assist for wrinting NeoVim config in Lua
 	"lewis6991/gitsigns.nvim",
+	"hrsh7th/vim-vsnip",
+	"hrsh7th/vim-vsnip-integ",
 	{
 		"kylechui/nvim-surround",
 		version = "*", -- Use for stability; omit to use `main` branch for the latest features

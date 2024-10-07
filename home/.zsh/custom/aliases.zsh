@@ -25,6 +25,7 @@ alias pu='pushd'
 alias type='type -a'
 alias plz=sudo
 alias zshconf="${EDITOR} ${HOME}/.zshrc"
+alias nv="${HOME}/bin/neovide"
 
 
 #

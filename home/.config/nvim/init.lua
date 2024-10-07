@@ -6,7 +6,7 @@ require'mason'.setup()
 
 require'nvim-treesitter.configs'.setup {
 	-- A list of parser names, or "all" (the five listed parsers should always be installed)
-	ensure_installed = { "c", "lua", "vim", "help", "query", "go" },
+	ensure_installed = { "c", "lua", "vim", "vimdoc","query", "help", "go", "rust", "zig" },
 
 	-- Install parsers synchronously (only applied to `ensure_installed`)
 	sync_install = false,
@@ -145,6 +145,17 @@ local capabilities = require'cmp_nvim_lsp'.default_capabilities()
 require'lspconfig'['gopls'].setup {
 	capabilities = capabilities
 }
+require'lspconfig'['ols'].setup({})
+require'lspconfig'['clangd'].setup({
+	server =  {
+		on_attach = function(_, bufnr) 
+			local bufopts = { noremap = true, silent = true, buffer = bufnr }
+			vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, bufopts)
+		end
+	}
+})
+require'lspconfig'['zls'].setup({})
+require'lspconfig'['pyright'].setup({})
 
 require'feline'.setup({
 	components = ctp_feline.get(),
@@ -180,7 +191,7 @@ require'gitsigns'.setup {
   },
   current_line_blame_formatter = '<author>, <author_time:%Y-%m-%d> - <summary>',
   sign_priority = 6,
-  update_debounce = 100,
+	update_debounce = 100,
   status_formatter = nil, -- Use default
   max_file_length = 40000, -- Disable if file is longer than this (in lines)
   preview_config = {
@@ -190,9 +201,6 @@ require'gitsigns'.setup {
     relative = 'cursor',
     row = 0,
     col = 1
-  },
-  yadm = {
-    enable = false
   },
 }
 
@@ -214,3 +222,17 @@ vim.api.nvim_set_keymap('v', '<D-v>', '<C-R>+', { noremap = true, silent = true}
 vim.cmd('colo catppuccin')
 vim.cmd('set guifont=JetBrainsMono\\ Nerd\\ Font\\ Mono:h15')
 vim.cmd('set ts=2 sts=2 sw=2')
+vim.opt.smartcase = true
+vim.opt.ignorecase = true
+
+vim.keymap.set("v", "∆", ":m '>+1<CR>gv=gv")
+vim.keymap.set("v", "˚", ":m '<-2<CR>gv=gv")
+vim.keymap.set("n", "∆", ":m .+1<CR>")
+vim.keymap.set("n", "˚", ":m .-2<CR>")
+
+if vim.g.neovide then
+  vim.defer_fn(function()
+    vim.cmd("NeovideFocus")
+  end, 25)
+end
+

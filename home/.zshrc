@@ -14,4 +14,4 @@
 source /opt/homebrew/opt/antidote/share/antidote/antidote.zsh
 antidote load
 
-eval $(starship init zsh)
+eval "$(starship init zsh)"
